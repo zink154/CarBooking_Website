@@ -1,21 +1,26 @@
 <?php
-session_start();
+// Chỉ khởi động session nếu chưa có
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-function checkLogin() {
+// Kiểm tra nếu chưa đăng nhập thì chuyển về trang đăng nhập người dùng
+function checkLogin($redirect = 'login.php') {
     if (!isset($_SESSION['user_id'])) {
-        header('Location: ../pages/login.php');
+        header("Location: $redirect");
         exit();
     }
 }
 
+// Kiểm tra có phải admin hay không
 function isAdmin() {
     return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
 
-function checkAdmin() {
+// Nếu không phải admin thì chuyển hướng
+function checkAdmin($redirect = 'index.php') {
     if (!isAdmin()) {
-        header('Location: ../pages/index.php');
+        header("Location: $redirect");
         exit();
     }
 }
-?>

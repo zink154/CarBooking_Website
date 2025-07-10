@@ -2,7 +2,7 @@
 // Định nghĩa các hằng số
 define('BASE_URL', 'http://localhost:8080/CarBooking_Website');
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'zincglasses');
+define('DB_NAME', 'car_booking');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 

@@ -1,8 +1,4 @@
 <?php
-// Đảm bảo tệp config.php đã được include trước khi dùng BASE_URL
-if (!defined('BASE_URL')) {
-    include __DIR__ . '/../includes/config.php'; // Đường dẫn tới file config
-}
 
 // Kiểm tra và khởi tạo session nếu chưa có
 if (session_status() === PHP_SESSION_NONE) {
@@ -52,7 +48,7 @@ $user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người d
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
                 <!-- Logo -->
-                <a class="navbar-brand" href="<?= BASE_URL ?>/index.php">Zinc Glasses</a>
+                <a class="navbar-brand" href="<?= BASE_URL ?>/index.php">TamHang Tourist</a>
                 
                 <!-- Nút Toggle cho màn hình nhỏ -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,10 +59,9 @@ $user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người d
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/pages/products.php">Sản phẩm</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/pages/cart.php">Giỏ hàng</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/pages/news.php">Tin tức</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/pages/contact.php">Liên hệ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">Tìm xe</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">Đặt xe</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/contact.php">Liên hệ</a></li>
 
                         <!-- Hiển thị thông tin người dùng -->
                         <?php if ($is_logged_in): ?>
