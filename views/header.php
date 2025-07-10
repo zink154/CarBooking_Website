@@ -83,7 +83,7 @@ $user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người d
                             </li>
                         <?php else: ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= BASE_URL ?>/pages/login.php">Đăng nhập</a>
+                                <a class="nav-link" href="<?= BASE_URL ?>login.php">Đăng nhập</a>
                             </li>
                         <?php endif; ?>
                     </ul>

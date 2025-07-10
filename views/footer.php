@@ -30,8 +30,8 @@
             <div class="row">
                 <!-- Logo và thông tin bản quyền -->
                 <div class="col-md-6">
-                    <h5 class="mb-3">Zinc Glasses</h5>
-                    <p>&copy; <?= date('Y') ?> Zinc Glasses. Mọi quyền được bảo lưu.</p>
+                    <h5 class="mb-3">TamHang Tourist</h5>
+                    <p>&copy; <?= date('Y') ?> TamHang Tourist. All right reserved.</p>
                 </div>
 
                 <!-- Liên kết điều hướng -->
