@@ -1,5 +1,6 @@
 <?php
 
+
 // Kiểm tra và khởi tạo session nếu chưa có
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -15,7 +16,7 @@ $user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người d
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zinc Glasses</title>
+    <title>TamHang Tourist</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- Custom CSS -->
@@ -83,7 +84,7 @@ $user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người d
                             </li>
                         <?php else: ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= BASE_URL ?>login.php">Đăng nhập</a>
+                                <a class="nav-link" href="<?= BASE_URL ?>/login.php">Đăng nhập</a>
                             </li>
                         <?php endif; ?>
                     </ul>
