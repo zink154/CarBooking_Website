@@ -31,6 +31,9 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
         /* In đậm toàn bộ chữ navbar */
         .navbar .nav-link {
             font-weight: 700;
+            transition: all 0.2s ease;
+            text-align: center;
+            display: block;
         }
 
         /* Hiển thị dropdown khi hover */
@@ -82,7 +85,7 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
 
                 <!-- Menu điều hướng -->
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav mx-auto text-center">
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">GIỚI THIỆU</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DÒNG XE</a></li>
