@@ -22,20 +22,24 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/styles.css">
-    <style>
+        <style>
         /* Màu nền navbar */
         .navbar-custom {
             background-color: #fcb213 !important;
         }
 
+        /* In đậm toàn bộ chữ navbar */
+        .navbar .nav-link {
+            font-weight: 700;
+        }
+
         /* Hiển thị dropdown khi hover */
         .navbar-nav .dropdown:hover .dropdown-menu {
-            display: block; /* Hiển thị dropdown khi hover */
+            display: block;
             opacity: 1;
             visibility: visible;
         }
 
-        /* Hiệu ứng mượt */
         .dropdown-menu {
             transition: all 0.3s ease;
             opacity: 0;
@@ -47,7 +51,20 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
             opacity: 1;
             visibility: visible;
         }
+        .navbar .nav-link {
+        font-weight: 700;
+        transition: all 0.2s ease;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            background-color: #0d6efd;
+            color: #fff !important;
+            border-radius: 5px;
+            padding: 6px 12px;
+        }
     </style>
+
 </head>
 <body>
     <header class="main-header">
@@ -65,10 +82,10 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                 <!-- Menu điều hướng -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">Tìm xe</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">Đặt xe</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/contact.php">Liên hệ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">TÌM XE</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">ĐẶT XE</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/contact.php">LIÊN HỆ</a></li>
 
                         <!-- Hiển thị thông tin người dùng -->
                         <?php if ($is_logged_in): ?>
