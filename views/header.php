@@ -86,7 +86,7 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">TÌM XE</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">ĐẶT XE</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/contact.php">LIÊN HỆ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/contact.php">LIÊN HỆ</a></li>
 
                         <!-- Hiển thị thông tin người dùng -->
                         <?php if ($is_logged_in): ?>
@@ -95,20 +95,20 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                                     Xin chào, <?= htmlspecialchars($user_name); ?>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/pages/profile.php">Hồ sơ của tôi</a></li>
-                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/pages/change_password.php">Đổi mật khẩu</a></li> <!-- Đổi mật khẩu -->
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>profile.php">Hồ sơ của tôi</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>change_password.php">Đổi mật khẩu</a></li> <!-- Đổi mật khẩu -->
                                     
                                     <!-- Hiển thị Dashboard nếu là admin -->
                                     <?php if ($user_role === 'admin'): ?>
                                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/dashboard.php">Truy cập Dashboard</a></li>
                                     <?php endif; ?>
                                     
-                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/pages/logout.php">Đăng xuất</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/logout.php">Đăng xuất</a></li>
                                 </ul>
                             </li>
                         <?php else: ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= BASE_URL ?>/login.php">Đăng nhập</a>
+                                <a class="nav-link" href="<?= BASE_URL ?>/login.php">ĐĂNG NHẬP</a>
                             </li>
                         <?php endif; ?>
                     </ul>
