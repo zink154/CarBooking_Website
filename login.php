@@ -23,12 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'type' => $user['type']
             ];
 
-            if ($user['type'] === 'admin') {
-                header("Location: /admin/");
-            } else {
-                header("Location: /user/");
-            }
-            exit;
+        header("Location: index.php"); // 👈 redirect về trang chủ
+        exit;
+        
         } else {
             $error_message = "Mật khẩu không đúng!";
         }
