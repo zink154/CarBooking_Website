@@ -84,8 +84,9 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">TÌM XE</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">ĐẶT XE</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">GIỚI THIỆU</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DÒNG XE</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DỊCH VỤ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/contact.php">LIÊN HỆ</a></li>
 
                         <!-- Hiển thị thông tin người dùng -->
