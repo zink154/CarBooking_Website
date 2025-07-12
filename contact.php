@@ -5,17 +5,38 @@ require_once __DIR__ . '/config/session.php';
 
 <?php include 'views/header.php'; ?>
 
-<!-- Khung chỉ còn Thông tin liên hệ -->
+    <style>
+    .blink {
+        animation: blinkText 1s infinite;
+    }
+
+    @keyframes blinkText {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    .pulse {
+        animation: pulseAnim 1.5s infinite;
+    }
+
+    @keyframes pulseAnim {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+    </style>
+
+<!-- Thông tin liên hệ -->
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <div class="card shadow p-4">
                 <div class="text-center">
-                    <h5 class="mb-3 fw-bold">THÔNG TIN LIÊN HỆ</h5>
+                    <h5 class="mb-3 fw-bold text-center pulse blink">THÔNG TIN LIÊN HỆ</h5>
                     <p class="fw-bold">NHÀ XE TAMHANG TOURIST</p>
-                    <p>Địa chỉ: 368C, Khu vực I, Ba Láng, Cái Răng, Cần Thơ, Vietnam</p>
-                    <p>Hotline: 036.727.8495 – 036.642.6365</p>
-                    <p>Email: tamhangtourist83@gmail.com</p>
+                    <p><strong>Địa chỉ:</strong> 368C, Khu vực I, Ba Láng, Cái Răng, Cần Thơ, Vietnam</p>
+                    <p><strong>Hotline:</strong> 036.727.8495 – 036.642.6365</p>
+                    <p><strong>Email:</strong> tamhangtourist83@gmail.com</p>
                     <div class="mt-3">
                         <img src="<?= BASE_URL ?>/images/logo.jfif" alt="TamHang Logo" style="max-width: 120px;">
                     </div>
