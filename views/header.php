@@ -30,6 +30,7 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
 
         /* In đậm toàn bộ chữ navbar */
         .navbar .nav-link {
+            color: #000 !important; /* Đặt màu chữ thành đen */
             font-weight: 700;
             transition: all 0.2s ease;
             text-align: center;
