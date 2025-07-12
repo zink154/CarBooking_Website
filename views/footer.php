@@ -47,8 +47,8 @@
                 <div class="col-md-3">
                     <h5 class="mb-3">Kết nối với chúng tôi</h5>
                     <ul class="list-unstyled d-flex gap-3">
-                        <li><a href="https://facebook.com" target="_blank" class="text-light"><i class="bi bi-facebook"></i></a></li>
-                        <li><a href="https://twitter.com" target="_blank" class="text-light"><i class="bi bi-twitter"></i></a></li>
+                        <li><a href="https://www.facebook.com/profile.php?id=61561758564355" target="_blank" class="text-light"><i class="bi bi-facebook"></i></a></li>
+                        <li><a href="https://www.tiktok.com/@tm.hng.tourist" target="_blank" class="text-light"><i class="bi bi-tiktok"></i></a></li>
                         <li><a href="https://instagram.com" target="_blank" class="text-light"><i class="bi bi-instagram"></i></a></li>
                     </ul>
                 </div>
