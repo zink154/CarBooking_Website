@@ -13,7 +13,8 @@ require_once __DIR__ . '/config/session.php';
     <img src="images/logo.jfif" alt="Logo" class="my-3" style="max-height: 200px;">
 
     <!-- Carousel bắt đầu -->
-    <div id="mainCarousel" class="carousel slide mx-auto mt-4" style="max-width: 700px;" data-bs-ride="carousel">
+    <div id="mainCarousel" class="carousel slide mx-auto mt-4">
+
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="images/car1.jpg" class="d-block w-100 rounded" alt="Xe 1">
