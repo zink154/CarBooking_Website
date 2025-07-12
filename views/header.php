@@ -22,6 +22,11 @@ $user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người d
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/styles.css">
     <style>
+        /* Màu nền navbar */
+        .navbar-custom {
+            background-color: #fcb213 !important;
+        }
+
         /* Hiển thị dropdown khi hover */
         .navbar-nav .dropdown:hover .dropdown-menu {
             display: block; /* Hiển thị dropdown khi hover */
@@ -46,7 +51,7 @@ $user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người d
 <body>
     <header class="main-header">
         <!-- Thanh điều hướng -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
             <div class="container">
                 <!-- Logo -->
                 <a class="navbar-brand" href="<?= BASE_URL ?>/index.php">TamHang Tourist</a>
