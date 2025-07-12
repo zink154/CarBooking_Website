@@ -88,7 +88,16 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                     <ul class="navbar-nav mx-auto text-center">
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">GIỚI THIỆU</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DÒNG XE</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="carDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                DÒNG XE
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="carDropdown"> <!-- ĐÃ BỎ text-center -->
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/book_car.php?type=4">Xe 4 chỗ</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/book_car.php?type=7">Xe 7 chỗ</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/book_car.php?type=16">Xe 16 chỗ</a></li>
+                            </ul>
+                        </li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DỊCH VỤ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/contact.php">LIÊN HỆ</a></li>
 

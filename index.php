@@ -37,16 +37,52 @@ require_once __DIR__ . '/config/session.php';
         </button>
     </div>
     <!-- Carousel kết thúc -->
-
-    <!-- Nút điều hướng -->
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-3 text-center">
-            <a href="user/" class="btn btn-primary w-100">Truy cập người dùng</a>
-        </div>
-        <div class="col-md-3 text-center">
-            <a href="admin/" class="btn btn-secondary w-100">Đăng nhập quản trị</a>
-        </div>
-    </div>
 </div>
+
+<div class="container my-5 mb-5">
+  <div class="row align-items-center">
+    
+    <!-- Giới thiệu -->
+    <div class="col-md-6">
+      <h3 class="fw-bold text-dark">GIỚI THIỆU VỀ CHÚNG TÔI</h3>
+      <div style="text-align: justify;">
+        <p><strong>TamHang Tourist</strong> xin kính chào quý khách!</p>
+
+        <p>
+          Chúng tôi là đơn vị kinh doanh cung cấp dịch vụ Taxi – Du lịch Uy tín – Chuyên nghiệp – 
+          Giá rẻ tại Cần Thơ cũng như các tỉnh lân cận thuộc khu vực miền Nam.
+        </p>
+
+        <p>
+          Quý khách có thể đặt xe nhanh chóng qua tổng đài Hotline: 
+          <strong>036.727.8495</strong> – <strong>036.642.6365</strong>, chúng tôi phục vụ 24/7.
+        </p>
+
+        <p>
+          Với phương châm <em>“Khách hàng là trung tâm”</em>, TamHang Tourist luôn cung cấp dịch vụ 
+          chất lượng cao, đảm bảo an toàn và thoải mái trên mọi hành trình.
+        </p>
+
+        <p>
+          Chúng tôi sở hữu đội ngũ tài xế được đào tạo bài bản, giàu kinh nghiệm, tận tâm phục vụ 
+          khách hàng. Giá cả cạnh tranh, minh bạch, cam kết mang đến trải nghiệm tốt nhất cho Quý khách.
+        </p>
+      </div>
+    </div>
+
+    <!-- Video giới thiệu -->
+    <div class="col-md-6">
+      <div class="ratio ratio-16x9">
+        <iframe 
+          src="https://www.youtube.com/embed/AQn8VTHTUmM" 
+          title="Video giới thiệu TamHang Tourist"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 <?php include __DIR__ . '/views/footer.php'; ?>
