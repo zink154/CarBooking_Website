@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'type' => $user['type']
             ];
 
-            // Chuyển hướng theo vai trò
             if ($user['type'] === 'admin') {
                 header("Location: /admin/");
             } else {
@@ -46,6 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container mt-5">
     <div class="login-container bg-white p-4 rounded shadow" style="max-width: 400px; margin: auto;">
         <h1 class="text-center">Đăng nhập</h1>
+
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success text-center">
+                <?= $_SESSION['success']; ?>
+            </div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
 
         <?php if (!empty($error_message)): ?>
             <div class="alert alert-danger"><?= $error_message; ?></div>

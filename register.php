@@ -7,24 +7,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $phone = trim($_POST['phone']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $address = trim($_POST['address']);
+    $password_raw = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
     $type = 'unverified';
 
-    // Kiểm tra email đã tồn tại chưa
-    $check = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
-    $check->bind_param("s", $email);
-    $check->execute();
-    if ($check->get_result()->num_rows > 0) {
-        $error = "Email đã được sử dụng.";
+    // Kiểm tra xác nhận mật khẩu
+    if ($password_raw !== $confirm_password) {
+        $error = "Mật khẩu và xác nhận mật khẩu không khớp.";
     } else {
-        $stmt = $conn->prepare("INSERT INTO users (name, email, phone, password_hash, address, type) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $name, $email, $phone, $password, $address, $type);
-        if ($stmt->execute()) {
+        $password = password_hash($password_raw, PASSWORD_DEFAULT);
+
+        // Kiểm tra email đã tồn tại chưa
+        $check = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
+        $check->bind_param("s", $email);
+        $check->execute();
+        if ($check->get_result()->num_rows > 0) {
+            $error = "Email đã được sử dụng.";
+        } else {
+            $stmt = $conn->prepare("INSERT INTO users (name, email, phone, password_hash, type) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $name, $email, $phone, $password, $type);
+            if ($stmt->execute()) {
+            $_SESSION['success'] = "Đăng ký thành công! Bạn có thể đăng nhập.";
             header("Location: login.php");
             exit;
-        } else {
-            $error = "Lỗi khi đăng ký.";
+            } else {
+                $error = "Lỗi khi đăng ký.";
+            }
         }
     }
 }
@@ -83,23 +91,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h3 class="card-title text-center mb-4">TẠO TÀI KHOẢN</h3>
                 <form action="register.php" method="post">
                     <div class="mb-3">
-                        <label for="name" class="form-label">HỌ TÊN</label>
+                        <label for="name" class="form-label">Họ và Tên:</label>
                         <input type="text" class="form-control" name="name" id="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">EMAIL</label>
+                        <label for="email" class="form-label">Email:</label>
                         <input type="email" class="form-control" name="email" id="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">SỐ ĐIỆN THOẠI</label>
+                        <label for="phone" class="form-label">Số điện thoại:</label>
                         <input type="text" class="form-control" name="phone" id="phone" required>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">MẬT KHẨU</label>
+                        <label for="password" class="form-label">Mật khẩu:</label>
                         <input type="password" class="form-control" name="password" id="password" required>
                     </div>
                     <div class="mb-3">
-                        <label for="confirm_password" class="form-label">XÁC NHẬN MẬT KHẨU</label>
+                        <label for="confirm_password" class="form-label">Xác nhận mật khẩu:</label>
                         <input type="password" class="form-control" name="confirm_password" id="confirm_password" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
