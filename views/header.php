@@ -7,10 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Kiểm tra trạng thái đăng nhập
-$is_logged_in = isset($_SESSION['user_id']); // Kiểm tra xem người dùng đã đăng nhập chưa
-$user_name = $is_logged_in ? $_SESSION['user_name'] : ''; // Tên người dùng, lưu trong session
-$user_role = $is_logged_in ? $_SESSION['user_role'] : ''; // Vai trò người dùng, lưu trong session
+$is_logged_in = isset($_SESSION['user']); // Kiểm tra xem người dùng đã đăng nhập chưa
+$user_name = $is_logged_in ? $_SESSION['user']['name'] : ''; // Tên người dùng, lưu trong session
+$user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò người dùng, lưu trong session
 ?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
