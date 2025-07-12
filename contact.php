@@ -1,77 +1,26 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/session.php';
-
-$success = '';
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $subject = trim($_POST['subject']);
-    $message = trim($_POST['message']);
-
-    if (!$name || !$email || !$subject || !$message) {
-        $error = "Vui lòng điền đầy đủ thông tin.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Email không hợp lệ.";
-    } else {
-        $success = "Liên hệ của bạn đã được gửi thành công!";
-    }
-}
 ?>
 
 <?php include 'views/header.php'; ?>
 
-<!-- Khung liên hệ và thông tin -->
+<!-- Khung chỉ còn Thông tin liên hệ -->
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-6">
             <div class="card shadow p-4">
-                <div class="row">
-                    <!-- Cột trái: Thông tin liên hệ -->
-                    <div class="col-md-5 d-flex align-items-center border-end" style="padding-right: 30px;">
-                        <div class="w-100">
-                            <h5 class="mb-3 text-center">THÔNG TIN LIÊN HỆ</h5>
-                            <p class="text-center fw-bold">NHÀ XE TAMHANG TOURIST</p>
-                            <p class="text-center">Địa chỉ: 368C, Khu vực I, Ba Láng, Cái Răng, Cần Thơ Can Tho, Vietnam</p>
-                            <p class="text-center">Hotline: 036.727.8495 – 036.642.6365</p>
-                            <p class="text-center">Email: tamhangtourist83@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <!-- Cột phải: Form liên hệ -->
-                    <div class="col-md-7 ps-md-4">
-                        <h4 class="text-center mb-4">Liên hệ với chúng tôi</h4>
-
-                        <?php if ($success): ?>
-                            <div class="alert alert-success"><?= $success; ?></div>
-                        <?php elseif ($error): ?>
-                            <div class="alert alert-danger"><?= $error; ?></div>
-                        <?php endif; ?>
-
-                        <form method="POST" novalidate>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Họ tên</label>
-                                <input type="text" name="name" id="name" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" id="email" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="subject" class="form-label">Tiêu đề</label>
-                                <input type="text" name="subject" id="subject" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="message" class="form-label">Nội dung</label>
-                                <textarea name="message" id="message" rows="4" class="form-control" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Gửi liên hệ</button>
-                        </form>
+                <div class="text-center">
+                    <h5 class="mb-3 fw-bold">THÔNG TIN LIÊN HỆ</h5>
+                    <p class="fw-bold">NHÀ XE TAMHANG TOURIST</p>
+                    <p>Địa chỉ: 368C, Khu vực I, Ba Láng, Cái Răng, Cần Thơ, Vietnam</p>
+                    <p>Hotline: 036.727.8495 – 036.642.6365</p>
+                    <p>Email: tamhangtourist83@gmail.com</p>
+                    <div class="mt-3">
+                        <img src="<?= BASE_URL ?>/images/logo.jfif" alt="TamHang Logo" style="max-width: 120px;">
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
 </div>
