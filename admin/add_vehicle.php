@@ -74,28 +74,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <option value="" disabled selected>— Chọn loại xe —</option>
                         <option value="4 chỗ">4 chỗ</option>
                         <option value="7 chỗ">7 chỗ</option>
+                        <option value="9 chỗ">9 chỗ</option>
                         <option value="16 chỗ">16 chỗ</option>
+                        <option value="24 chỗ">24 chỗ</option>
+                        <option value="29 chỗ">29 chỗ</option>
+                        <option value="35 chỗ">35 chỗ</option>
+                        <option value="45 chỗ">45 chỗ</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Hiệu xe</label>
-                    <select id="car_brand" name="car_brand" class="form-select" required>
-                        <option value="">— Chọn hiệu xe —</option>
-                        <option value="Toyota">Toyota</option>
-                        <option value="Kia">Kia</option>
-                        <option value="Ford">Ford</option>
-                        <option value="Hyundai">Hyundai</option>
-                        <option value="Mitsubishi">Mitsubishi</option>
-                        <option value="Honda">Honda</option>
-                        <option value="Mazda">Mazda</option>
-                        <option value="Isuzu">Isuzu</option>
-                        <option value="Suzuki">Suzuki</option>
-                        <option value="Chevrolet">Chevrolet</option>
-                        <option value="VinFast">VinFast</option>
-                        <option value="Mercedes">Mercedes</option>
-                        <option value="BMW">BMW</option>
-                    </select>
+                        <select id="car_brand" name="car_brand" class="form-select" required>
+                            <option value="">— Chọn hiệu xe —</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Kia">Kia</option>
+                            <option value="Ford">Ford</option>
+                            <option value="Hyundai">Hyundai</option>
+                            <option value="Mitsubishi">Mitsubishi</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Mazda">Mazda</option>
+                            <option value="Isuzu">Isuzu</option>
+                            <option value="Suzuki">Suzuki</option>
+                            <option value="Chevrolet">Chevrolet</option>
+                            <option value="VinFast">VinFast</option>
+                            <option value="Mercedes">Mercedes</option>
+                            <option value="Hino">Hino</option>
+                            <option value="Samco">Samco</option>
+                            <option value="Thaco">Thaco</option>
+                            <option value="Kia Granbird">Kia</option>
+                        </select>
                 </div>
 
                 <div class="mb-3">
@@ -146,7 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
         switch (this.value) {
             case '4 chỗ': capacityInput.value = 4; break;
             case '7 chỗ': capacityInput.value = 7; break;
+            case '9 chỗ': capacityInput.value = 9; break;
             case '16 chỗ': capacityInput.value = 16; break;
+            case '24 chỗ': capacityInput.value = 24; break;
+            case '29 chỗ': capacityInput.value = 29; break;
+            case '35 chỗ': capacityInput.value = 35; break;
+            case '45 chỗ': capacityInput.value = 45; break;
             default: capacityInput.value = '';
         }
     });
@@ -154,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function () {
     new TomSelect("#car_brand", {
         create: false,
         placeholder: "Nhập hoặc chọn hiệu xe...",
-        maxOptions: 10,
         highlight: true
     });
 

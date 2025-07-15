@@ -7,14 +7,14 @@ if (!isset($_GET['id'])) {
 
 $car_id = $_GET['id'];
 
-// Cập nhật trạng thái xe thành 'maintenance' (hoặc 'inactive' nếu bạn mở rộng thêm)
-$stmt = $conn->prepare("UPDATE cars SET status = 'maintenance' WHERE car_id = ?");
+// Cập nhật trạng thái xe thành 'unavailable'
+$stmt = $conn->prepare("UPDATE cars SET status = 'unavailable' WHERE car_id = ?");
 $stmt->bind_param("i", $car_id);
 
 if ($stmt->execute()) {
     header("Location: vehicles.php");
     exit();
 } else {
-    echo "Không thể ẩn xe: " . $stmt->error;
+    echo "Không thể cập nhật trạng thái xe: " . $stmt->error;
 }
 ?>
