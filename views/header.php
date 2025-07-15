@@ -158,14 +158,14 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
 
         <!-- Nút Messenger với tooltip -->
         <a href="https://www.facebook.com/profile.php?id=61561758564355" target="_blank" data-tooltip="Messenger">
-            <img src="images/assets/icons/Messenger.png" alt="Messenger" class="fixed-icon">
+            <img src="<?= BASE_URL ?>/images/assets/icons/Messenger.png" alt="Messenger" class="fixed-icon">
         </a>
 
         <!-- Nút Google Maps -->
         <a href="https://www.google.com/maps?ll=9.987448,105.745761&z=18&t=m&hl=en&gl=US&mapclient=embed&q=9°59%2715.1%22N+105°44%2746.7%22E+9.987528,+105.746306@9.987527799999999,105.7463056" 
         target="_blank" 
         data-tooltip="Google Maps">
-            <img src="images/assets/icons/map.png" alt="Google Maps" class="fixed-icon">
+            <img src="<?= BASE_URL ?>/images/assets/icons/map.png" alt="Google Maps" class="fixed-icon">
         </a>
     </div>
 
