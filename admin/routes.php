@@ -1,7 +1,10 @@
 <?php
 require_once __DIR__ . '/../config/autoload_config.php';
 $result = $conn->query("SELECT * FROM routes");
+$back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 ?>
+
+
 
 <?php include __DIR__ . '/../views/header.php'; ?>
 <!DOCTYPE html>
@@ -47,7 +50,7 @@ $result = $conn->query("SELECT * FROM routes");
     </div>
 
     <div class="mt-4">
-      <a href="vehicles.php" class="btn btn-outline-secondary">← Quản lý xe</a>
+      <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-outline-secondary">← Quay lại</a>
     </div>
   </div>
 </body>
