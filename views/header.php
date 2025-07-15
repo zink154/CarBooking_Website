@@ -134,7 +134,11 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
         <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
             <div class="container">
                 <!-- Logo -->
-                <a class="navbar-brand" href="<?= BASE_URL ?>/index.php">TamHang Tourist</a>
+                <a class="navbar-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>/index.php">
+                    <img src="images/index/Logo_2.png" alt="Logo" height="40">
+                    <span>TamHang Tourist</span>
+                </a>
+
                 
                 <!-- Nút Toggle cho màn hình nhỏ -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,9 +155,9 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                                 DÒNG XE
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="carDropdown"> <!-- ĐÃ BỎ text-center -->
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/book_car.php?type=4">Xe 4 chỗ</a></li>
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/book_car.php?type=7">Xe 7 chỗ</a></li>
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/book_car.php?type=16">Xe 16 chỗ</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/car_4.php">Xe 4 chỗ</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/car_7.php">Xe 7 chỗ</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/car_16.php">Xe 16 chỗ</a></li>
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DỊCH VỤ</a></li>
