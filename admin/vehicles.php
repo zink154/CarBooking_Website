@@ -26,10 +26,13 @@ $result = $conn->query("SELECT * FROM cars");
 </head>
 <body class="bg-light">
 
-<div class="container py-4">
+<div class="container py-4 px-4 px-md-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">🚘 Danh sách xe</h2>
-        <a href="add_vehicle.php" class="btn btn-success">➕ Thêm xe mới</a>
+        <h2 class="fw-bold mb-0">🚘 Danh sách xe</h2>
+        <div class="d-flex gap-2">
+            <a href="dashboard.php" class="btn btn-secondary">← Quay lại</a>
+            <a href="add_vehicle.php" class="btn btn-yellow">➕ Thêm xe mới</a>
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -37,6 +40,7 @@ $result = $conn->query("SELECT * FROM cars");
             <thead class="table-dark">
                 <tr class="text-center">
                     <th>ID</th>
+                    <th>Tên xe</th>
                     <th>Loại</th>
                     <th>Hiệu</th>
                     <th>Biển số</th>
@@ -51,6 +55,7 @@ $result = $conn->query("SELECT * FROM cars");
                 <?php while ($car = $result->fetch_assoc()): ?>
                     <tr class="text-center">
                         <td><?= $car['car_id'] ?></td>
+                        <td><?= htmlspecialchars($car['car_name']) ?></td>
                         <td><?= htmlspecialchars($car['car_type']) ?></td>
                         <td><?= htmlspecialchars($car['car_brand']) ?></td>
                         <td><?= htmlspecialchars($car['plate_number']) ?></td>

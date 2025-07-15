@@ -29,7 +29,7 @@ require_once __DIR__ . '/config/autoload_config.php';
             </tbody>
         </table>
     </div>
-    <p class="text-muted text-center fst-italic">* Giá ở trang này là tham khảo.</p>
+    <p class="text-muted text-center fst-italic">*Lưu ý: Bảng giá mang tính chất tham khảo và có thể thay đổi tùy thời điểm hoặc điều kiện thực tế.</p>
 
     <hr>
 
