@@ -151,10 +151,10 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/intro.php">GIỚI THIỆU</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="carDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="<?= BASE_URL ?>/car_categories.php" id="carDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 DÒNG XE
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="carDropdown"> <!-- ĐÃ BỎ text-center -->
+                            <ul class="dropdown-menu" aria-labelledby="carDropdown">
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/car_4.php">Xe 4 chỗ</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/car_7.php">Xe 7 chỗ</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>/car_16.php">Xe 16 chỗ</a></li>
@@ -193,5 +193,11 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
     </header>
     <!-- Thêm Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("carDropdown").addEventListener("click", function (e) {
+            // Nếu đang mở dropdown thì vẫn cho click chuyển trang
+            window.location.href = "<?= BASE_URL ?>/car_categories.php";
+        });
+    </script>
 </body>
 </html>
