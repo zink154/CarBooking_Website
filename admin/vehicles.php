@@ -80,7 +80,7 @@ $result = $conn->query("SELECT * FROM cars");
                         </td>
                         <td>
                             <?php if ($car['image_url']): ?>
-                                <img src="<?= htmlspecialchars($car['image_url']) ?>" class="car-img" alt="Ảnh xe">
+                                <img src="<?= BASE_URL ?>/<?= htmlspecialchars($car['image_url']) ?>" class="car-img" alt="Ảnh xe">
                             <?php else: ?>
                                 <span class="text-muted">Không có ảnh</span>
                             <?php endif; ?>

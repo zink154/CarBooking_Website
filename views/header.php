@@ -114,6 +114,13 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
             border: none;
         }
 
+        .bg-yellow {
+            background-color: #fcb213 !important;
+            color: black !important;
+            font-weight: 600;
+            border: none;
+        }
+
         .btn-yellow:hover {
             background-color: #e5a500 !important;
             color: black !important;

@@ -58,8 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <div class="container mt-5">
     <div class="card shadow-sm">
-        <div class="card-header bg-success text-white">
-            <h4 class="mb-0">➕ Thêm xe mới</h4>
+        <div class="card-header bg-yellow text-dark">
+            <h4 class="mb-0">Thêm xe mới</h4>
         </div>
         <div class="card-body">
             <form method="POST" action="" enctype="multipart/form-data" onsubmit="return validatePrice();">
