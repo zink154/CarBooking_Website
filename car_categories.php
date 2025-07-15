@@ -40,7 +40,7 @@ require_once __DIR__ . '/config/session.php';
                 <div class="col-md-8">
                     <h5 class="fw-bold"><?= htmlspecialchars($car['title']) ?></h5>
                     <p><?= htmlspecialchars($car['desc']) ?></p>
-                    <a href="car_<?= $car['type'] ?>.php" class="btn btn-dark">Xem thêm</a>
+                    <a href="car_<?= $car['type'] ?>.php" class="btn btn-yellow"><strong>Xem thêm</strong></a>
                 </div>
             </div>
         <?php endforeach; ?>
