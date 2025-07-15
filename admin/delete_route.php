@@ -1,9 +1,6 @@
 <?php
 require_once '../config/autoload_config.php';
 
-if ($_SESSION['user_type'] !== 'admin') {
-    die("Bạn không có quyền truy cập.");
-}
 
 if (!isset($_GET['id'])) {
     die("Thiếu ID tuyến.");

@@ -17,8 +17,12 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 <body class="bg-light">
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="fw-bold text-primary mb-0">Danh sách tuyến đường</h2>
-      <a href="add_route.php" class="btn btn-yellow">➕ Thêm tuyến mới</a>
+        <h2 class="fw-bold mb-0">Danh sách tuyến</h2>
+        <div class="d-flex gap-2">
+            <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-secondary">← Quay lại</a>
+            <a href="add_route.php" class="btn btn-yellow">➕ Thêm tuyến mới</a>
+            <a href="bookings.php" class="btn btn-secondary">Xem danh sách đơn →</a>
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -29,6 +33,7 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
             <th>Điểm đi</th>
             <th>Điểm đến</th>
             <th>Khoảng cách (km)</th>
+            <th>Trạng thái</th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -39,6 +44,13 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
               <td><?= htmlspecialchars($route['departure_location']) ?></td>
               <td><?= htmlspecialchars($route['arrival_location']) ?></td>
               <td><?= htmlspecialchars(rtrim(rtrim($route['distance_km'], '0'), '.')) ?></td>
+              <td class="text-center">
+                <?php
+                echo $route['status'] === 'available'
+                    ? '<span class="badge bg-success">Hoạt động</span>'
+                    : '<span class="badge bg-secondary">Ngưng hoạt động</span>';
+                ?>
+              </td>
               <td>
                 <a href="edit_route.php?id=<?= $route['route_id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
                 <a href="delete_route.php?id=<?= $route['route_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xác nhận xóa tuyến này?')">Xóa</a>
@@ -47,11 +59,6 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
           <?php endwhile; ?>
         </tbody>
       </table>
-    </div>
-
-    <div class="mt-4 d-flex justify-content-between">
-      <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-outline-secondary">← Quay lại</a>
-      <a href="bookings.php" class="btn btn-info">📋 Xem đơn đặt xe</a>
     </div>
   </div>
 </body>

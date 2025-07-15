@@ -32,7 +32,7 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
 
 <div class="container py-4 px-4 px-md-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-0">🚘 Danh sách xe</h2>
+        <h2 class="fw-bold mb-0">Danh sách xe</h2>
         <div class="d-flex gap-2">
             <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-secondary">← Quay lại</a>
             <a href="add_vehicle.php" class="btn btn-yellow">➕ Thêm xe mới</a>

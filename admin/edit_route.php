@@ -7,6 +7,7 @@ if (!isset($_GET['id'])) {
 }
 
 $route_id = intval($_GET['id']);
+$status = $_POST['status'];
 
 // Xử lý cập nhật khi gửi form
 $error = '';
@@ -18,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($departure === $arrival) {
         $error = "❌ Điểm đi và điểm đến không được trùng nhau.";
     } else {
-        $stmt = $conn->prepare("UPDATE routes SET departure_location=?, arrival_location=?, distance_km=? WHERE route_id=?");
+        $stmt = $conn->prepare("UPDATE routes SET departure_location=?, arrival_location=?, distance_km=?, status=? WHERE route_id=?");
         $stmt->bind_param("ssdi", $departure, $arrival, $distance, $route_id);
 
         if ($stmt->execute()) {
@@ -80,6 +81,12 @@ $arrival_clean = preg_replace('/\(.*?\)/', '', $route['arrival_location']);
                         <label class="form-label">Khoảng cách (km):</label>
                         <input type="number" step="0.1" name="distance_km" class="form-control" value="<?= $route['distance_km'] ?>" required>
                     </div>
+
+                    <label for="status" class="form-label">Trạng thái tuyến</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="available" <?= $route['status'] === 'available' ? 'selected' : '' ?>>Hoạt động</option>
+                        <option value="unavailable" <?= $route['status'] === 'unavailable' ? 'selected' : '' ?>>Ngưng hoạt động</option>
+                    </select>
 
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-outline-secondary">← Quay lại</a>
