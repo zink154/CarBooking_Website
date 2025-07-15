@@ -4,38 +4,6 @@ require_once __DIR__ . '/config/autoload_config.php';
 
 <?php include __DIR__ . '/views/header.php'; ?>
 
-<style>
-    .contact-button {
-        padding: 12px 24px;
-        font-size: 18px;
-        border: 2px solid #fcb213;
-        border-radius: 8px;
-        color: #fcb213;
-        background-color: white;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        animation: glowPulse 1.5s infinite;
-    }
-
-    .contact-button:hover {
-        background-color: #fcb213;
-        color: white;
-        border-color: #e2a100;
-    }
-
-    @keyframes glowPulse {
-        0% {
-            box-shadow: 0 0 10px rgba(252, 178, 19, 0.3);
-        }
-        50% {
-            box-shadow: 0 0 20px rgba(252, 178, 19, 0.8);
-        }
-        100% {
-            box-shadow: 0 0 10px rgba(252, 178, 19, 0.3);
-        }
-    }
-</style>
-
 <div class="container py-4">
     <h1 class="text-center text-primary">GIỚI THIỆU</h1>
     <p class="text-center">Dịch vụ thuê xe du lịch chuyên nghiệp – Xe 4 chỗ, 7 chỗ, 16 chỗ phục vụ khắp miền Tây và TP.HCM</p>

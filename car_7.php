@@ -54,9 +54,18 @@ require_once __DIR__ . '/config/session.php';
                 <li><strong>Xe Đẹp – Đời Mới – Vệ Sinh Sạch Sẽ:</strong> Đảm bảo trải nghiệm tốt nhất cho quý khách.</li>
                 <li><strong>Chi Phí Rõ Ràng:</strong> Báo giá trước – không phát sinh phụ thu bất ngờ.</li>
             </ul>
-
+  
             <p class="mt-4 fs-5 text-dark"><strong>Liên hệ ngay hôm nay để đặt xe 7 chỗ nhanh chóng và trải nghiệm dịch vụ chất lượng cùng TamHang Tourist!</strong></p>
 
+            <div class="text-center mt-5">
+                <h4 class="mb-3 text-danger fw-bold">Bạn cần tư vấn lịch trình, báo giá chi tiết hoặc đặt xe ngay?</h4>
+                <p class="mb-4 text-muted">Đội ngũ tư vấn viên của TamHang Tourist luôn sẵn sàng hỗ trợ bạn 24/7. Liên hệ ngay để nhận ưu đãi và hỗ trợ nhanh chóng nhất!</p>
+
+                <a href="contact.php" class="contact-button">
+                    📩 Liên hệ ngay
+                </a>
+            </div>
+            
         </div>
     </div>
 </div>

@@ -119,6 +119,35 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
             color: black !important;
         }
 
+        .contact-button {
+            padding: 12px 24px;
+            font-size: 18px;
+            border: 2px solid #fcb213;
+            border-radius: 8px;
+            color: #fcb213;
+            background-color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: glowPulse 1.5s infinite;
+        }
+
+        .contact-button:hover {
+            background-color: #fcb213;
+            color: white;
+            border-color: #e2a100;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 10px rgba(252, 178, 19, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(252, 178, 19, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(252, 178, 19, 0.3);
+            }
+        }
     </style>
 
 </head>
