@@ -67,11 +67,68 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
             border-radius: 5px;
             padding: 6px 12px;
         }
-        
+
+        .fixed-buttons {
+            position: fixed;
+            bottom: 150px;
+            right: 15px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fixed-buttons a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* Để dùng ::after */
+        }
+
+        .fixed-buttons img.fixed-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        /* Tooltip khi hover vào nút Messenger */
+        .fixed-buttons a:hover::after {
+            content: attr(data-tooltip); /* Lấy nội dung từ thuộc tính data-tooltip */
+            position: absolute;
+            right: 130%; /* Hiển thị bên trái icon */
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #fcb213;
+            color: black;
+            padding: 6px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            font-size: 14px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
     </style>
 
 </head>
 <body>
+
+    <!-- Nút cố định bên trái -->
+    <div class="fixed-buttons">
+
+        <!-- Nút Messenger với tooltip -->
+        <a href="https://www.facebook.com/profile.php?id=61561758564355" target="_blank" data-tooltip="Messenger">
+            <img src="images/assets/icons/Messenger.png" alt="Messenger" class="fixed-icon">
+        </a>
+
+        <!-- Nút Google Maps -->
+        <a href="https://www.google.com/maps?ll=9.987448,105.745761&z=18&t=m&hl=en&gl=US&mapclient=embed&q=9°59%2715.1%22N+105°44%2746.7%22E+9.987528,+105.746306@9.987527799999999,105.7463056" 
+        target="_blank" 
+        data-tooltip="Google Maps">
+            <img src="images/assets/icons/map.png" alt="Google Maps" class="fixed-icon">
+        </a>
+    </div>
+
     <header class="main-header">
         <!-- Thanh điều hướng -->
         <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
