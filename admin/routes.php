@@ -49,8 +49,9 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
       </table>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-4 d-flex justify-content-between">
       <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-outline-secondary">← Quay lại</a>
+      <a href="bookings.php" class="btn btn-info">📋 Xem đơn đặt xe</a>
     </div>
   </div>
 </body>
