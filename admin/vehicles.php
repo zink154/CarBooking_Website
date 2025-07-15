@@ -32,6 +32,7 @@ $result = $conn->query("SELECT * FROM cars");
         <div class="d-flex gap-2">
             <a href="dashboard.php" class="btn btn-secondary">← Quay lại</a>
             <a href="add_vehicle.php" class="btn btn-yellow">➕ Thêm xe mới</a>
+            <a href="routes.php" class="btn btn-secondary">Quản lý tuyến →</a>
         </div>
     </div>
 
