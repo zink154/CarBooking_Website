@@ -88,7 +88,7 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto text-center">
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/search_car.php">GIỚI THIỆU</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/intro.php">GIỚI THIỆU</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="carDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 DÒNG XE
