@@ -175,7 +175,7 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
             <div class="container">
                 <!-- Logo -->
                 <a class="navbar-brand d-flex align-items-center gap-2" href="<?= BASE_URL ?>/index.php">
-                    <img src="images/index/Logo_2.png" alt="Logo" height="40">
+                    <img src="<?= BASE_URL ?>/images/index/Logo_2.png" alt="Logo" height="40">
                     <span>TamHang Tourist</span>
                 </a>
 
@@ -210,7 +210,7 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : ''; // Vai trò ngườ
                                     Xin chào, <?= htmlspecialchars($user_name); ?>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>profile.php">Hồ sơ của tôi</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/profile.php">Hồ sơ của tôi</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>change_password.php">Đổi mật khẩu</a></li> <!-- Đổi mật khẩu -->
                                     
                                     <!-- Hiển thị Dashboard nếu là admin -->
