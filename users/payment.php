@@ -1,7 +1,5 @@
 <?php
-require_once 'config/session.php';
-require_once 'config/auth.php';
-require_once 'config/db.php';
+require_once __DIR__ . '/../config/autoload_config.php';
 
 if (!isset($_GET['booking_id'])) {
     echo "Thiếu mã đơn đặt xe.";

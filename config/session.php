@@ -1,23 +1,22 @@
 <?php
-// Chỉ khởi động session nếu chưa có
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Kiểm tra nếu chưa đăng nhập thì chuyển về trang đăng nhập người dùng
+// Kiểm tra đăng nhập
 function checkLogin($redirect = 'login.php') {
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['user'])) {
         header("Location: $redirect");
         exit();
     }
 }
 
-// Kiểm tra có phải admin hay không
+// Kiểm tra admin
 function isAdmin() {
-    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    return isset($_SESSION['user']) && $_SESSION['user']['type'] === 'admin';
 }
 
-// Nếu không phải admin thì chuyển hướng
+// Chặn nếu không phải admin
 function checkAdmin($redirect = 'index.php') {
     if (!isAdmin()) {
         header("Location: $redirect");

@@ -1,53 +1,66 @@
 <?php
-require_once 'config/session.php';
-require_once 'config/auth.php'; // Kiểm tra đăng nhập
-require_once 'config/db.php';   // Biến $conn đã được tạo
+require_once __DIR__ . '/../config/autoload_config.php';
 
 // Lấy danh sách tuyến đường
 $routeQuery = $conn->query("SELECT * FROM routes");
 
 // Lấy danh sách loại xe đang sẵn sàng
 $typeQuery = $conn->query("SELECT DISTINCT car_type FROM cars WHERE status = 'available'");
+
+$now = new DateTime();
+$nowFormatted = $now->format('Y-m-d\TH:i'); // định dạng cho input[type=datetime-local]
 ?>
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Đặt xe</title>
-</head>
-<body>
-    <h2>Đặt xe mới</h2>
+<?php include __DIR__ . '/../views/header.php'; ?>
 
-    <form action="booking_result.php" method="POST">
-        <label for="route_id">Tuyến đường:</label><br>
-        
-        <select name="route_id" required>
-            <?php while ($row = $routes->fetch_assoc()): ?>
-                <?php
-                // Ẩn tuyến có tên chứa "(Ngưng" hoặc "(hoạt động)"
-                if (str_contains($row['departure_location'], 'Ngưng') || str_contains($row['arrival_location'], 'hoạt động')) continue;
-                ?>
-                <option value="<?= $row['route_id'] ?>">
-                    <?= $row['departure_location'] ?> → <?= $row['arrival_location'] ?> (<?= $row['distance_km'] ?> km)
-                </option>
-            <?php endwhile; ?>
-        </select>
+<div class="container mt-5">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-yellow text-dark">
+            <h3 class="mb-0">Đặt xe mới</h3>
+        </div>
+        <div class="card-body">
+            <form action="booking_result.php" method="POST">
+                <div class="mb-3">
+                    <label for="route_id" class="form-label">Tuyến đường</label>
+                    <select name="route_id" id="route_id" class="form-select" required>
+                        <?php while ($row = $routeQuery->fetch_assoc()): ?>
+                            <?php
+                            if (str_contains($row['departure_location'], 'Ngưng') || str_contains($row['arrival_location'], 'hoạt động')) continue;
+                            ?>
+                            <option value="<?= $row['route_id'] ?>">
+                                <?= $row['departure_location'] ?> → <?= $row['arrival_location'] ?> (<?= $row['distance_km'] ?> km)
+                            </option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+                
+                <!-- NGÀY NHẬN XE -->
+                <div class="mb-3">
+                    <label for="pickup_datetime" class="form-label">Ngày nhận xe</label>
+                    <input type="datetime-local" name="pickup_datetime" id="pickup_datetime" class="form-control" required value="<?= $nowFormatted ?>">
+                    <small class="text-muted">Định dạng: Tháng / Ngày / Năm (MM/DD/YYYY), Sáng - Chiều (AM/PM)</small>
+                </div>
 
-        <label for="pickup_datetime">Ngày nhận xe:</label><br>
-        <input type="datetime-local" name="pickup_datetime" id="pickup_datetime" required><br><br>
+                <!-- NGÀY TRẢ XE -->
+                <div class="mb-3">
+                    <label for="return_datetime" class="form-label">Ngày trả xe</label>
+                    <input type="datetime-local" name="return_datetime" id="return_datetime" class="form-control" required>
+                    <small class="text-muted">Định dạng: Tháng / Ngày / Năm (MM/DD/YYYY), Sáng - Chiều (AM/PM) </small>
+                </div>
 
-        <label for="return_datetime">Ngày trả xe:</label><br>
-        <input type="datetime-local" name="return_datetime" id="return_datetime" required><br><br>
+                <div class="mb-3">
+                    <label for="car_type" class="form-label">Loại xe</label>
+                    <select name="car_type" id="car_type" class="form-select" required>
+                        <?php while ($type = $typeQuery->fetch_assoc()): ?>
+                            <option value="<?= $type['car_type'] ?>"><?= $type['car_type'] ?></option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
 
-        <label for="car_type">Loại xe:</label><br>
-        <select name="car_type" id="car_type" required>
-            <?php while ($type = $typeQuery->fetch_assoc()): ?>
-                <option value="<?= $type['car_type'] ?>"><?= $type['car_type'] ?></option>
-            <?php endwhile; ?>
-        </select><br><br>
+                <button type="submit" class="btn btn-yellow w-100">Tìm xe phù hợp</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-        <button type="submit">Tìm xe phù hợp</button>
-    </form>
-</body>
-</html>
+<?php include __DIR__ . '/../views/footer.php'; ?>

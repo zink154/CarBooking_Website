@@ -16,16 +16,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result && $result->num_rows > 0) {
         $user = $result->fetch_assoc();
+
         if (password_verify($password, $user['password_hash'])) {
+            // Lưu thông tin vào session
             $_SESSION['user'] = [
                 'user_id' => $user['user_id'],
                 'name' => $user['name'],
                 'type' => $user['type']
             ];
+            $_SESSION['user_id'] = $user['user_id'];
 
-        header("Location: index.php"); // 👈 redirect về trang chủ
-        exit;
-        
+            header("Location: index.php");
+            exit();
         } else {
             $error_message = "Mật khẩu không đúng!";
         }
@@ -51,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <?php if (!empty($error_message)): ?>
-            <div class="alert alert-danger"><?= $error_message; ?></div>
+            <div class="alert alert-danger text-center"><?= $error_message; ?></div>
         <?php endif; ?>
 
         <form method="POST" class="needs-validation" novalidate>

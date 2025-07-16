@@ -1,8 +1,5 @@
 <?php
-// Đảm bảo session đã được khởi tạo
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/session.php';
 
 // Nếu chưa đăng nhập → quay lại login
 if (!isset($_SESSION['user'])) {

@@ -5,13 +5,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $departure = trim($_POST['departure_location']);
     $arrival = trim($_POST['arrival_location']);
     $distance = floatval($_POST['distance_km']);
-    $status = $_POST['status'];
+    $status = 'available'; // Mặc định là hoạt động
 
     if ($departure === $arrival) {
         $error = "❌ Điểm đi và điểm đến không được trùng nhau.";
     } else {
         $stmt = $conn->prepare("INSERT INTO routes (departure_location, arrival_location, distance_km, status) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssd", $departure, $arrival, $distance);
+        $stmt->bind_param("ssds", $departure, $arrival, $distance, $status);
 
         if ($stmt->execute()) {
             header("Location: routes.php");
@@ -57,21 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <input type="number" name="distance_km" step="0.1" class="form-control" required>
             </div>
 
-            <label for="status" class="form-label">Trạng thái tuyến</label>
-            <select name="status" id="status" class="form-select" required>
-                <option value="available">Hoạt động</option>
-                <option value="unavailable">Ngưng hoạt động</option>
-            </select>
+            <!-- Không cần chọn trạng thái, mặc định là 'available' -->
 
-           <div class="d-flex justify-content-between">
-            <a href="routes.php" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left"></i> Quay lại
-            </a>
-            <button type="submit" class="btn btn-warning text-dark">
-                <i class="bi bi-plus-circle"></i> Thêm tuyến
-            </button>
+            <div class="d-flex justify-content-between">
+                <a href="routes.php" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Quay lại
+                </a>
+                <button type="submit" class="btn btn-warning text-dark">
+                    <i class="bi bi-plus-circle"></i> Thêm tuyến
+                </button>
             </div>
-
         </form>
     </div>
 </body>
