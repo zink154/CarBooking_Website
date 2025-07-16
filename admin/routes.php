@@ -1,12 +1,11 @@
-<?php
+
+<?php include __DIR__ . '/../views/admin_header.php';
+
 require_once __DIR__ . '/../config/autoload_config.php';
 $result = $conn->query("SELECT * FROM routes");
 $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 ?>
 
-
-
-<?php include __DIR__ . '/../views/header.php'; ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -64,4 +63,4 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/footer.php'; ?>
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>

@@ -1,5 +1,6 @@
 <?php
-require_once '../config/autoload_config.php';
+
+include __DIR__ . '/../views/admin_footer.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $departure = trim($_POST['departure_location']);
@@ -72,4 +73,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/footer.php'; ?>
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>

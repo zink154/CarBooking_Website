@@ -1,10 +1,4 @@
-<?php
-require_once __DIR__ . '/../config/autoload_config.php';
-
-// Kiểm tra quyền admin
-if (!isset($_SESSION['user']) || $_SESSION['user']['type'] !== 'admin') {
-    die("Bạn không có quyền truy cập.");
-}
+<?php include __DIR__ . '/../views/admin_header.php';
 
 $result = $conn->query("SELECT * FROM cars");
 ?>
@@ -13,7 +7,6 @@ $result = $conn->query("SELECT * FROM cars");
 $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
 ?>
 
-<?php include __DIR__ . '/../views/header.php'; ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -104,4 +97,4 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/footer.php'; ?>
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>

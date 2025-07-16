@@ -1,5 +1,5 @@
-<?php
-require_once '../config/autoload_config.php';
+<?php include __DIR__ . '/../views/admin_header.php';
+
 $back_url = $_SERVER['HTTP_REFERER'] ?? 'routes.php';
 
 if (!isset($_GET['id'])) {
@@ -48,7 +48,6 @@ $departure_clean = preg_replace('/\(.*?\)/', '', $route['departure_location']);
 $arrival_clean = preg_replace('/\(.*?\)/', '', $route['arrival_location']);
 ?>
 
-<?php include __DIR__ . '/../views/header.php'; ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -99,4 +98,4 @@ $arrival_clean = preg_replace('/\(.*?\)/', '', $route['arrival_location']);
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/footer.php'; ?>
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>

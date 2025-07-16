@@ -1,5 +1,4 @@
-<?php
-require_once '../config/autoload_config.php';
+<?php include __DIR__ . '/../views/admin_header.php';
 
 if (!isset($_GET['id'])) {
     die("Thiếu ID xe.");
@@ -189,4 +188,4 @@ document.addEventListener('DOMContentLoaded', function () {
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/footer.php'; ?>
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>

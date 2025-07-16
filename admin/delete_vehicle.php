@@ -1,5 +1,8 @@
 <?php
-require_once '../config/autoload_config.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/admin_auth.php';
 
 if (!isset($_GET['id'])) {
     die("Thiếu ID xe.");

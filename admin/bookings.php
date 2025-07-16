@@ -160,4 +160,4 @@ $labels = [
 </div>
 </body>
 </html>
-<?php include __DIR__ . '/../views/footer.php'; ?>
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>

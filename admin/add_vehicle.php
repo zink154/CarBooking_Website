@@ -1,5 +1,6 @@
 <?php
-require_once '../config/autoload_config.php';
+
+include __DIR__ . '/../views/admin_footer.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $car_name = $_POST['car_name'];
@@ -226,4 +227,5 @@ function validatePrice() {
 
 </body>
 </html>
-<?php include __DIR__ . '/../views/footer.php'; ?>
+
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>

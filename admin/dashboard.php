@@ -1,6 +1,7 @@
-<?php
-require_once __DIR__ . '/../config/autoload_config.php';
 
+<?php include __DIR__ . '/../views/admin_header.php'; ?>
+
+<?php
 // Thống kê đơn hàng
 $totalBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings")->fetch_assoc()['total'];
 $completedBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings WHERE status = 'completed'")->fetch_assoc()['total'];
@@ -16,7 +17,6 @@ $avgRating = $conn->query("SELECT AVG(score) AS avg FROM ratings")->fetch_assoc(
 $avgRating = $avgRating ? round($avgRating, 1) : "Chưa có";
 ?>
 
-<?php include __DIR__ . '/../views/header.php'; ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -98,4 +98,4 @@ $avgRating = $avgRating ? round($avgRating, 1) : "Chưa có";
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/footer.php'; ?>
+<?php include __DIR__ . '/../views/admin_footer.php'; ?>
