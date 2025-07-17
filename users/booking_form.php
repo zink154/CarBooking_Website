@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../config/autoload_config.php';
+// booking_form.php
+require_once __DIR__ . '/../config/auth.php';
 
 // Lấy danh sách tuyến đường
 $routeQuery = $conn->query("SELECT * FROM routes");

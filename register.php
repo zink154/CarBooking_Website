@@ -1,7 +1,21 @@
 <?php
+// register.php
+
 require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/config/session.php';
+require_once __DIR__ . '/config/db.php';
+
+
+// Load cấu hình từ config.ini
+$mailConfig = parse_ini_file(__DIR__ . '/config.ini', true);
+
+// Thêm PHPMailer
+require_once __DIR__ . '/src/PHPMailer-master/src/PHPMailer.php';
+require_once __DIR__ . '/src/PHPMailer-master/src/SMTP.php';
+require_once __DIR__ . '/src/PHPMailer-master/src/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
@@ -11,13 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_password = $_POST['confirm_password'];
     $type = 'unverified';
 
-    // Kiểm tra xác nhận mật khẩu
     if ($password_raw !== $confirm_password) {
         $error = "Mật khẩu và xác nhận mật khẩu không khớp.";
     } else {
         $password = password_hash($password_raw, PASSWORD_DEFAULT);
 
-        // Kiểm tra email đã tồn tại chưa
         $check = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
         $check->bind_param("s", $email);
         $check->execute();
@@ -27,11 +39,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare("INSERT INTO users (name, email, phone, password_hash, type) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("sssss", $name, $email, $phone, $password, $type);
             if ($stmt->execute()) {
-            $_SESSION['success'] = "Đăng ký thành công! Bạn có thể đăng nhập.";
-            header("Location: login.php");
-            exit;
+                $user_id = $conn->insert_id;
+
+                // Tạo token xác thực
+                $token = bin2hex(random_bytes(32));
+                $stmt_token = $conn->prepare("INSERT INTO email_verifications (user_id, token) VALUES (?, ?)");
+                $stmt_token->bind_param("is", $user_id, $token);
+                $stmt_token->execute();
+
+                $verification_link = "http://localhost/CarBooking_Website/verify_email.php?token=$token";
+
+                // Gửi email xác thực
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host       = $mailConfig['mail']['host'];
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = $mailConfig['mail']['username'];
+                    $mail->Password   = $mailConfig['mail']['app_password'];
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port       = $mailConfig['mail']['port'];
+
+                    $mail->CharSet = 'UTF-8';
+
+                    $mail->setFrom($mailConfig['mail']['username'], $mailConfig['mail']['from_name']);
+                    $mail->addAddress($email, $name);
+
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Xác thực tài khoản đặt xe';
+                    $mail->Body    = "Xin chào <strong>$name</strong>,<br><br>
+                        Vui lòng xác thực tài khoản bằng cách nhấn vào liên kết sau:<br>
+                        <a href='$verification_link'>$verification_link</a><br><br>
+                        Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.";
+
+                    $mail->send();
+                    $_SESSION['success'] = "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.";
+                    header("Location: " . BASE_URL . "/verify_notice.php");
+                    exit;
+                } catch (Exception $e) {
+                    $error = "Gửi email xác thực thất bại: {$mail->ErrorInfo}";
+                }
             } else {
-                $error = "Lỗi khi đăng ký.";
+                $error = "Lỗi khi đăng ký tài khoản.";
             }
         }
     }

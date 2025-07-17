@@ -1,15 +1,12 @@
 <?php
+// config.php
+
 // Định nghĩa các hằng số
 define('BASE_URL', 'http://localhost/CarBooking_Website');
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'car_booking');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-
-// Kiểm tra và khởi tạo session nếu chưa có
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 // Thiết lập kết nối cơ sở dữ liệu
 try {

@@ -1,11 +1,12 @@
 <?php
-require_once 'config/session.php';
-require_once 'config/auth.php';
-require_once 'config/db.php';
+// my_bookings.php
+
+require_once __DIR__ . '/../config/auth.php';
+
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 $user_id = $_SESSION['user_id'];
 
-// Lấy danh sách booking của người dùng
 $stmt = $conn->prepare("
     SELECT b.*, c.car_brand, c.plate_number, r.departure_location, r.arrival_location
     FROM bookings b
@@ -19,73 +20,101 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
+
+<?php include __DIR__ . '/../views/header.php'; ?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Lịch sử đặt xe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h2>Lịch sử đặt xe của bạn</h2>
+<body class="bg-light">
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Lịch sử đặt xe của bạn</h2>
 
     <?php if (isset($_SESSION['success'])): ?>
-        <p style="color:green"><?= $_SESSION['success'] ?></p>
-        <?php unset($_SESSION['success']); ?>
+        <div class="alert alert-success">
+            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+        </div>
     <?php endif; ?>
 
     <?php if ($result->num_rows > 0): ?>
-        <table border="1" cellpadding="10">
-            <tr>
-                <th>Mã đơn</th>
-                <th>Xe</th>
-                <th>Tuyến</th>
-                <th>Thời gian</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-            <?php while ($booking = $result->fetch_assoc()): ?>
-                <tr>
-                    <td>#<?= $booking['booking_id'] ?></td>
-                    <td><?= $booking['car_brand'] ?> (<?= $booking['plate_number'] ?>)</td>
-                    <td><?= $booking['departure_location'] ?> → <?= $booking['arrival_location'] ?></td>
-                    <td>
-                        <?= $booking['pickup_datetime'] ?><br>→ <?= $booking['return_datetime'] ?>
-                    </td>
-                    <td><?= number_format($booking['total_price'], 0) ?> VND</td>
-                    <td><?= ucfirst($booking['status']) ?></td>
-                    <td>
-                        <?php if ($booking['status'] === 'booked'): ?>
-                            <form action="cancel_booking.php" method="POST" onsubmit="return confirm('Bạn chắc chắn muốn hủy đơn này?');">
-                                <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                                <button type="submit">Hủy đơn</button>
-                            </form>
-                        <?php else: ?>
-                            -
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover bg-white shadow-sm">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Xe</th>
+                        <th>Tuyến</th>
+                        <th>Thời gian</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($booking = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td>#<?= $booking['booking_id'] ?></td>
+                            <td><?= $booking['car_brand'] ?> (<?= $booking['plate_number'] ?>)</td>
+                            <td><?= $booking['departure_location'] ?> → <?= $booking['arrival_location'] ?></td>
+                            <td>
+                                <?= date('d/m/Y H:i', strtotime($booking['pickup_datetime'])) ?><br>
+                                → <?= date('d/m/Y H:i', strtotime($booking['return_datetime'])) ?>
+                            </td>
+                            <td><?= number_format($booking['total_price'], 0, ',', '.') ?> VND</td>
+                            <td>
+                                <?php
+                                    $status = $booking['status'];
+                                    $badge = match($status) {
+                                        'booked' => 'warning',
+                                        'processing' => 'info',
+                                        'completed' => 'success',
+                                        'cancelled' => 'secondary',
+                                        default => 'light'
+                                    };
+                                ?>
+                                <span class="badge bg-<?= $badge ?> text-uppercase"><?= $status ?></span>
+                            </td>
+                            <td class="text-center">
+                                <?php if ($booking['status'] === 'booked'): ?>
+                                    <form action="cancel_booking.php" method="POST" onsubmit="return confirm('Bạn chắc chắn muốn hủy đơn này?');" class="d-inline">
+                                        <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger">Hủy đơn</button>
+                                    </form>
+                                <?php elseif ($booking['status'] === 'completed'): ?>
+                                    <?php
+                                    // Kiểm tra đã đánh giá chưa
+                                    $checkRating = $conn->prepare("SELECT * FROM ratings WHERE booking_id = ?");
+                                    $checkRating->bind_param("i", $booking['booking_id']);
+                                    $checkRating->execute();
+                                    $rated = $checkRating->get_result()->num_rows > 0;
+                                    ?>
+                                    <?php if (!$rated): ?>
+                                        <a href="rate_booking.php?booking_id=<?= $booking['booking_id'] ?>" class="btn btn-sm btn-outline-primary">Đánh giá</a>
+                                    <?php else: ?>
+                                        <span class="text-success">✔ Đã đánh giá</span>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     <?php else: ?>
-        <p>Bạn chưa có đơn đặt xe nào.</p>
+        <div class="alert alert-info text-center">Bạn chưa có đơn đặt xe nào.</div>
     <?php endif; ?>
 
-    <?php if ($booking['status'] === 'completed'): ?>
-        <?php
-        // Kiểm tra đã đánh giá chưa
-        $checkRating = $conn->prepare("SELECT * FROM ratings WHERE booking_id = ?");
-        $checkRating->bind_param("i", $booking['booking_id']);
-        $checkRating->execute();
-        $rated = $checkRating->get_result()->num_rows > 0;
-        ?>
-        <?php if (!$rated): ?>
-            <a href="rate_booking.php?booking_id=<?= $booking['booking_id'] ?>">Đánh giá</a>
-        <?php else: ?>
-            Đã đánh giá
-        <?php endif; ?>
-    <?php endif; ?>
-
-    <br><a href="index.php">🏠 Về trang chủ</a>
+    <div class="text-center mt-4">
+        <a href="<?= BASE_URL ?>/index.php" class="btn btn-outline-secondary">Về trang chủ</a>
+    </div>
+</div>
 </body>
 </html>
+
+<?php include __DIR__ . '/../views/footer.php'; ?>

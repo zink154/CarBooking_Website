@@ -1,7 +1,7 @@
 <?php
-require_once 'config/session.php';
-require_once 'config/auth.php';
-require_once 'config/db.php';
+// thank_you.php
+
+require_once __DIR__ . '/../config/auth.php';
 
 if (!isset($_GET['booking_id'])) {
     echo "Không tìm thấy đơn đặt xe.";
@@ -31,6 +31,8 @@ if ($result->num_rows === 0) {
 $booking = $result->fetch_assoc();
 ?>
 
+<?php include __DIR__ . '/../views/header.php'; ?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -52,3 +54,6 @@ $booking = $result->fetch_assoc();
     <a href="index.php">🏠 Về trang chủ</a>
 </body>
 </html>
+
+<?php include __DIR__ . '/../views/footer.php'; ?>
+

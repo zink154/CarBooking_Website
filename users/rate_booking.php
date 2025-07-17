@@ -1,7 +1,7 @@
 <?php
-require_once 'config/session.php';
-require_once 'config/auth.php';
-require_once 'config/db.php';
+// rate_booking.php
+
+require_once __DIR__ . '/../config/auth.php';
 
 if (!isset($_GET['booking_id'])) {
     echo "Thiếu mã đơn.";
@@ -29,6 +29,8 @@ if ($result->num_rows === 0) {
 
 $booking = $result->fetch_assoc();
 ?>
+
+<?php include __DIR__ . '/../views/header.php'; ?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -59,3 +61,5 @@ $booking = $result->fetch_assoc();
     </form>
 </body>
 </html>
+
+<?php include __DIR__ . '/../views/footer.php'; ?>

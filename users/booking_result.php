@@ -1,6 +1,7 @@
 <?php
-session_start();
-require_once __DIR__ . '/../config/autoload_config.php';
+// booking_result.php
+
+require_once __DIR__ . '/../config/auth.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $route_id = $_POST['route_id'];
@@ -36,7 +37,6 @@ $pickup = DateTime::createFromFormat('Y-m-d\TH:i', $pickup_datetime);
 $return = DateTime::createFromFormat('Y-m-d\TH:i', $return_datetime);
 
 ?>
-
 <?php include __DIR__ . '/../views/header.php'; ?>
 
 <div class="container mt-5">

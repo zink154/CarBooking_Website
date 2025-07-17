@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/autoload_config.php';
+// edit_profile.php
+
+require_once __DIR__ . '/../config/auth.php';
 
 // Kiểm tra đăng nhập
 if (!isset($_SESSION['user'])) {

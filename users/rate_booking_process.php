@@ -1,7 +1,8 @@
 <?php
-require_once 'config/session.php';
-require_once 'config/auth.php';
-require_once 'config/db.php';
+// rate_booking_process.php
+
+require_once __DIR__ . '/../config/auth.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $booking_id = $_POST['booking_id'];

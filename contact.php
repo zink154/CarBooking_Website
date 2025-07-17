@@ -37,7 +37,7 @@ require_once __DIR__ . '/config/autoload_config.php';
                     <p><strong>Hotline:</strong> 036.727.8495 – 036.642.6365</p>
                     <p><strong>Email:</strong> tamhangtourist83@gmail.com</p>
                     <div class="mt-3">
-                        <img src="<?= BASE_URL ?>/images/logo.jfif" alt="TamHang Logo" style="max-width: 120px;">
+                        <img src="<?= BASE_URL ?>/images/index/logo.jfif" alt="TamHang Logo" style="max-width: 120px;">
                     </div>
                 </div>
             </div>

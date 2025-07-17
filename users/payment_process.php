@@ -1,13 +1,19 @@
 <?php
-require_once 'config/session.php';
-require_once 'config/auth.php';
-require_once 'config/db.php';
+// payment_process.php
+
+require_once __DIR__ . '/../config/auth.php';
 
 // Kiểm tra POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $booking_id = $_POST['booking_id'];
     $method = $_POST['method'];
     $user_id = $_SESSION['user_id'];
+
+    $allowed_methods = ['vietqr', 'cash'];
+    if (!in_array($method, $allowed_methods)) {
+        echo "Phương thức thanh toán không hợp lệ.";
+        exit();
+    }
 
     // Kiểm tra booking có tồn tại và đúng user
     $stmt = $conn->prepare("SELECT * FROM bookings WHERE booking_id = ? AND user_id = ?");
@@ -31,24 +37,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
+    // Trạng thái thanh toán
+    $status = ($method === 'vietqr') ? 'paid' : 'unpaid';
+
     // Thêm vào bảng payments
-    $insert = $conn->prepare("INSERT INTO payments (booking_id, method, status) VALUES (?, ?, 'paid')");
-    $insert->bind_param("is", $booking_id, $method);
+    $insert = $conn->prepare("INSERT INTO payments (booking_id, method, status) VALUES (?, ?, ?)");
+    $insert->bind_param("iss", $booking_id, $method, $status);
 
     if ($insert->execute()) {
-        // Cập nhật trạng thái đơn hàng
-        $conn->query("UPDATE bookings SET status = 'processing' WHERE booking_id = $booking_id");
-
-        // Gửi thông báo (nếu có) – có thể tích hợp email sau
-
-        // Chuyển hướng đến lịch sử hoặc trang cảm ơn
-        header("Location: thank_you.php?booking_id=$booking_id");
-        exit();
+        echo "Đã ghi nhận thanh toán bằng phương thức: " . htmlspecialchars($method);
+        // Redirect nếu cần
+        // header("Location: payment_success.php");
     } else {
-        echo "Lỗi thanh toán: " . $insert->error;
+        echo "Có lỗi xảy ra khi xử lý thanh toán.";
     }
-} else {
-    header("Location: index.php");
-    exit();
 }
 ?>

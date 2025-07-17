@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once __DIR__ . '/../config/autoload_config.php';
+// booking_process.php
+require_once __DIR__ . '/../config/auth.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Lấy thông tin từ POST
