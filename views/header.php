@@ -8,7 +8,11 @@ require_once __DIR__ . '/../config/db.php';
 
 $is_logged_in = isset($_SESSION['user']);
 $user_name = $is_logged_in ? $_SESSION['user']['name'] : '';
-$user_role = $is_logged_in ? $_SESSION['user']['type'] : '';
+
+if ($is_logged_in) {
+    // Cập nhật lại user_role mỗi lần load (tránh cache sai sau khi xác thực)
+    $user_role = $_SESSION['user']['type'];
+}
 
 ?>
 
@@ -246,6 +250,14 @@ $user_role = $is_logged_in ? $_SESSION['user']['type'] : '';
                 </div>
             </div>
         </nav>
+
+
+    <?php if ($is_logged_in && $user_role === 'unverified'): ?>
+    <div class="alert alert-warning text-center m-0" style="border-radius: 0;">
+        ⚠️ Tài khoản của bạn chưa được xác thực. <a href="<?= BASE_URL ?>/verify_notice.php?auto_resend=1" class="alert-link">Bấm vào đây để xác thực</a>.
+    </div>
+    <?php endif; ?>
+    
     </header>
     <!-- Thêm Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,4 +1,6 @@
 <?php
+// login.php
+
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/config/session.php';
@@ -24,6 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'name' => $user['name'],
                 'type' => $user['type']
             ];
+            
+            if ($user['type'] === 'unverified') {
+                $_SESSION['warning'] = "Tài khoản của bạn chưa được xác thực. <a href='verify_notice.php' class='alert-link'>Bấm vào đây để xác thực</a>.";
+            }
+
             $_SESSION['user_id'] = $user['user_id'];
 
             header("Location: index.php");
@@ -45,12 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-container bg-white p-4 rounded shadow" style="max-width: 400px; margin: auto;">
         <h1 class="text-center">Đăng nhập</h1>
 
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success text-center">
-                <?= $_SESSION['success']; ?>
-            </div>
-            <?php unset($_SESSION['success']); ?>
-        <?php endif; ?>
+        <?php flash_message('success'); ?>
+        <?php flash_message('error'); ?>
 
         <?php if (!empty($error_message)): ?>
             <div class="alert alert-danger text-center"><?= $error_message; ?></div>
