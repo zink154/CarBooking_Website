@@ -1,11 +1,23 @@
 <?php
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/config/session.php';
+// index.php
+
+/**
+ * Homepage of TamHang Tourist
+ * Features:
+ *  - Display a welcoming message and company logo.
+ *  - Show a Bootstrap carousel with car images.
+ *  - Provide an introduction about TamHang Tourist.
+ *  - Include an embedded YouTube video for additional branding.
+ */
+
+require_once __DIR__ . '/config/config.php';   // Load configuration constants
+require_once __DIR__ . '/config/session.php';  // Start user session
 ?>
 
-<?php include __DIR__ . '/views/header.php'; ?>
+<?php include __DIR__ . '/views/header.php'; ?> <!-- Include website header -->
 
-    <style>
+<style>
+    /* Blink animation for the "Introduction" title */
     .blink {
         animation: blinkText 2s infinite;
     }
@@ -14,19 +26,18 @@ require_once __DIR__ . '/config/session.php';
         0%, 100% { opacity: 1; }
         50% { opacity: 0; }
     }
-    </style>
+</style>
 
-
+<!-- Welcome Section -->
 <div class="container mt-5 text-center">
     <h1 class="fw-bold">Chào mừng đến với TamHang Tourist</h1>
     <p>Hệ thống giúp bạn đặt xe nhanh chóng, tiện lợi, và an toàn.</p>
 
-    <!-- Logo chèn ngay dưới dòng mô tả -->
+    <!-- Logo directly under the description -->
     <img src="images/index/logo.jfif" alt="Logo" class="my-3" style="max-height: 200px;">
 
-    <!-- Carousel bắt đầu -->
+    <!-- Carousel Start -->
     <div id="mainCarousel" class="carousel slide mx-auto mt-4">
-
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="images/index/car1.jpg" class="d-block w-100 rounded" alt="Xe 1">
@@ -39,7 +50,7 @@ require_once __DIR__ . '/config/session.php';
             </div>
         </div>
 
-        <!-- Nút chuyển trái phải -->
+        <!-- Carousel navigation buttons -->
         <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
             <span class="visually-hidden">Trước</span>
@@ -49,13 +60,14 @@ require_once __DIR__ . '/config/session.php';
             <span class="visually-hidden">Sau</span>
         </button>
     </div>
-    <!-- Carousel kết thúc -->
+    <!-- Carousel End -->
 </div>
 
+<!-- Introduction and Video Section -->
 <div class="container my-5 mb-5">
   <div class="row align-items-center">
     
-    <!-- Giới thiệu -->
+    <!-- Introduction Content -->
     <div class="col-md-6">
       <h3 class="fw-bold text-dark blink">GIỚI THIỆU VỀ CHÚNG TÔI</h3>
       <div style="text-align: justify;">
@@ -83,7 +95,7 @@ require_once __DIR__ . '/config/session.php';
       </div>
     </div>
 
-    <!-- Video giới thiệu -->
+    <!-- Introduction Video -->
     <div class="col-md-6">
       <div class="ratio ratio-16x9">
         <iframe 
@@ -97,5 +109,4 @@ require_once __DIR__ . '/config/session.php';
   </div>
 </div>
 
-
-<?php include __DIR__ . '/views/footer.php'; ?>
+<?php include __DIR__ . '/views/footer.php'; ?> <!-- Include website footer -->

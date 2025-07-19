@@ -1,19 +1,34 @@
 <?php
-require_once __DIR__ . '/config/autoload_config.php';
+// car_4.php
+
+/**
+ * This page provides detailed information about the 4-seat car service.
+ * Features:
+ *  - Describe amenities and advantages of 4-seat cars.
+ *  - Highlight reasons why customers should choose TamHang Tourist.
+ *  - Provide contact information and a quick call-to-action link for booking.
+ */
+
+require_once __DIR__ . '/config/autoload_config.php'; // Autoload configuration and database connection
 ?>
 
-<?php include __DIR__ . '/views/header.php'; ?>
+<?php include __DIR__ . '/views/header.php'; ?> <!-- Include the website header -->
 
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
 
+            <!-- Page title -->
             <h2 class="fw-bold mb-4 text-uppercase">DÒNG XE: XE 4 CHỖ</h2>
 
+            <!-- Introduction -->
             <p class="lead"><strong>TamHang Tourist xin kính chào quý khách!</strong></p>
 
             <p class="text-justify">
-                Chúng tôi là đơn vị kinh doanh cung cấp dịch vụ Du lịch <strong>Uy tín – Chuyên nghiệp – Giá rẻ</strong> tại Cần Thơ và các tỉnh lân cận thuộc khu vực miền Nam. Với phương châm <strong>“Khách hàng là trung tâm”</strong>, TamHang Tourist luôn nỗ lực mang đến dịch vụ chất lượng cao, an toàn và thoải mái trên mọi hành trình.
+                Chúng tôi là đơn vị kinh doanh cung cấp dịch vụ Du lịch 
+                <strong>Uy tín – Chuyên nghiệp – Giá rẻ</strong> tại Cần Thơ và các tỉnh lân cận thuộc khu vực miền Nam.
+                Với phương châm <strong>“Khách hàng là trung tâm”</strong>, TamHang Tourist luôn nỗ lực mang đến 
+                dịch vụ chất lượng cao, an toàn và thoải mái trên mọi hành trình.
             </p>
 
             <p class="text-justify">
@@ -21,6 +36,7 @@ require_once __DIR__ . '/config/autoload_config.php';
                 <strong>036.727.8495 – 036.642.6365</strong>, chúng tôi phục vụ <strong>24/7</strong>.
             </p>
 
+            <!-- Features of 4-seat cars -->
             <h5 class="mt-4 fw-bold">Xe 4 Chỗ – Giải Pháp Di Chuyển Linh Hoạt & Tiện Lợi:</h5>
 
             <ol class="ps-3">
@@ -48,6 +64,7 @@ require_once __DIR__ . '/config/autoload_config.php';
                 </li>
             </ol>
 
+            <!-- Reasons to choose -->
             <h5 class="mt-4 fw-bold">Lý Do Nên Chọn TamHang Tourist:</h5>
 
             <ul class="ps-4">
@@ -56,11 +73,16 @@ require_once __DIR__ . '/config/autoload_config.php';
                 <li><strong>Giá Cả Minh Bạch – Không Phát Sinh:</strong> Giá niêm yết rõ ràng, không phụ thu bất ngờ.</li>
             </ul>
 
-            <p class="mt-4 fs-5 text-dark"><strong>Liên hệ đặt xe ngay hôm nay để trải nghiệm dịch vụ chuyên nghiệp và tận tâm nhất cùng TamHang Tourist!</strong></p>
+            <p class="mt-4 fs-5 text-dark">
+                <strong>Liên hệ đặt xe ngay hôm nay để trải nghiệm dịch vụ chuyên nghiệp và tận tâm nhất cùng TamHang Tourist!</strong>
+            </p>
             
+            <!-- Call-to-action -->
             <div class="text-center mt-5">
                 <h4 class="mb-3 text-danger fw-bold">Bạn cần tư vấn lịch trình, báo giá chi tiết hoặc đặt xe ngay?</h4>
-                <p class="mb-4 text-muted">Đội ngũ tư vấn viên của TamHang Tourist luôn sẵn sàng hỗ trợ bạn 24/7. Liên hệ ngay để nhận ưu đãi và hỗ trợ nhanh chóng nhất!</p>
+                <p class="mb-4 text-muted">
+                    Đội ngũ tư vấn viên của TamHang Tourist luôn sẵn sàng hỗ trợ bạn 24/7. Liên hệ ngay để nhận ưu đãi và hỗ trợ nhanh chóng nhất!
+                </p>
 
                 <a href="contact.php" class="contact-button">
                     📩 Liên hệ ngay
@@ -71,4 +93,4 @@ require_once __DIR__ . '/config/autoload_config.php';
     </div>
 </div>
 
-<?php include __DIR__ . '/views/footer.php'; ?>
+<?php include __DIR__ . '/views/footer.php'; ?> <!-- Include the website footer -->

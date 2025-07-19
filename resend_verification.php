@@ -1,24 +1,27 @@
 <?php
-require_once __DIR__ . '/config/autoload_config.php';
-require_once __DIR__ . '/src/PHPMailer-master/src/PHPMailer.php';
-require_once __DIR__ . '/src/PHPMailer-master/src/SMTP.php';
-require_once __DIR__ . '/src/PHPMailer-master/src/Exception.php';
+// resend_verification.php
+
+require_once __DIR__ . '/config/autoload_config.php';              // Load configuration, DB connection, and session
+require_once __DIR__ . '/src/PHPMailer-master/src/PHPMailer.php';  // PHPMailer class
+require_once __DIR__ . '/src/PHPMailer-master/src/SMTP.php';       // SMTP class for PHPMailer
+require_once __DIR__ . '/src/PHPMailer-master/src/Exception.php';  // Exception handling for PHPMailer
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+// Load mail configuration from config.ini
 $mailConfig = parse_ini_file(__DIR__ . '/config.ini', true);
 
-// ✅ Xử lý trước khi có bất kỳ HTML hoặc include nào
+// --- Pre-check: user session must exist ---
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['error'] = "Không tìm thấy thông tin người dùng.";
+    $_SESSION['error'] = "Không tìm thấy thông tin người dùng."; // User not found
     header("Location: login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 
-// Truy vấn user
+// --- Fetch user info ---
 $stmt = $conn->prepare("SELECT name, email, type FROM users WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -31,6 +34,8 @@ if ($result->num_rows === 0) {
 }
 
 $user = $result->fetch_assoc();
+
+// --- Ensure the user is still unverified ---
 if ($user['type'] !== 'unverified') {
     $_SESSION['error'] = "Tài khoản đã xác thực hoặc không hợp lệ.";
     header("Location: login.php");
@@ -40,32 +45,33 @@ if ($user['type'] !== 'unverified') {
 $name = $user['name'];
 $email = $user['email'];
 
-// Xoá token cũ và tạo token mới
+// --- Delete old verification token and create a new one ---
 $stmt = $conn->prepare("DELETE FROM email_verifications WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 
-$token = bin2hex(random_bytes(32));
+$token = bin2hex(random_bytes(32)); // Generate a secure random token
 $stmt = $conn->prepare("INSERT INTO email_verifications (user_id, token, created_at) VALUES (?, ?, NOW())");
 $stmt->bind_param("is", $user_id, $token);
 $stmt->execute();
 
+// Create the verification link
 $verification_link = "http://localhost/CarBooking_Website/verify_email.php?token=$token";
 
-// Gửi email
+// --- Send email using PHPMailer ---
 $mail = new PHPMailer(true);
 try {
     $mail->isSMTP();
-    $mail->Host = $mailConfig['mail']['host'];
+    $mail->Host = $mailConfig['mail']['host'];          // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = $mailConfig['mail']['username'];
-    $mail->Password = $mailConfig['mail']['app_password'];
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Username = $mailConfig['mail']['username'];  // SMTP username
+    $mail->Password = $mailConfig['mail']['app_password']; // SMTP password or app-specific password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Encryption
     $mail->Port = $mailConfig['mail']['port'];
     $mail->CharSet = 'UTF-8';
 
-    $mail->setFrom($mailConfig['mail']['username'], $mailConfig['mail']['from_name']);
-    $mail->addAddress($email, $name);
+    $mail->setFrom($mailConfig['mail']['username'], $mailConfig['mail']['from_name']); // Sender
+    $mail->addAddress($email, $name); // Recipient
     $mail->isHTML(true);
     $mail->Subject = 'Xác thực tài khoản';
     $mail->Body = "Xin chào <strong>$name</strong>,<br><br>
@@ -80,6 +86,6 @@ try {
     $_SESSION['error'] = "Không thể gửi email: {$mail->ErrorInfo}";
 }
 
-// Redirect lại verify_notice.php sau khi xử lý xong
+// --- Redirect back to verification notice page ---
 header("Location: verify_notice.php");
 exit;

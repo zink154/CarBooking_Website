@@ -1,10 +1,22 @@
 <?php
-require_once __DIR__ . '/config/autoload_config.php';
+// contact.php
+
+/**
+ * This page displays the contact information and map of TamHang Tourist.
+ * Features:
+ *  - Show company address, hotline, and email.
+ *  - Display a logo for brand recognition.
+ *  - Embed a Google Maps iframe for location reference.
+ *  - Apply simple animations (blink and pulse) to highlight headings.
+ */
+
+require_once __DIR__ . '/config/autoload_config.php'; // Autoload configuration and database connection
 ?>
 
-<?php include 'views/header.php'; ?>
+<?php include 'views/header.php'; ?> <!-- Include the website header -->
 
-    <style>
+<style>
+    /* Blink animation for headings */
     .blink {
         animation: blinkText 1s infinite;
     }
@@ -14,6 +26,7 @@ require_once __DIR__ . '/config/autoload_config.php';
         50% { opacity: 0; }
     }
 
+    /* Pulse animation for headings */
     .pulse {
         animation: pulseAnim 1.5s infinite;
     }
@@ -23,19 +36,21 @@ require_once __DIR__ . '/config/autoload_config.php';
         50% { transform: scale(1.08); }
         100% { transform: scale(1); }
     }
-    </style>
+</style>
 
-<!-- Thông tin liên hệ -->
+<!-- Contact Information Section -->
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <div class="card shadow p-4">
                 <div class="text-center">
+                    <!-- Highlighted Heading -->
                     <h5 class="mb-3 fw-bold text-center pulse blink">THÔNG TIN LIÊN HỆ</h5>
                     <p class="fw-bold">NHÀ XE TAMHANG TOURIST</p>
                     <p><strong>Địa chỉ:</strong> 368C, Khu vực I, Ba Láng, Cái Răng, Cần Thơ, Vietnam</p>
                     <p><strong>Hotline:</strong> 036.727.8495 – 036.642.6365</p>
                     <p><strong>Email:</strong> tamhangtourist83@gmail.com</p>
+                    <!-- Company Logo -->
                     <div class="mt-3">
                         <img src="<?= BASE_URL ?>/images/index/logo.jfif" alt="TamHang Logo" style="max-width: 120px;">
                     </div>
@@ -45,11 +60,12 @@ require_once __DIR__ . '/config/autoload_config.php';
     </div>
 </div>
 
-<!-- BẢN ĐỒ -->
+<!-- Map Section -->
 <div class="container pb-5">
     <h5 class="mb-3 text-center fw-bold">BẢN ĐỒ</h5>
     <div class="mx-auto" style="max-width: 700px;">
         <div class="ratio ratio-16x9 rounded shadow-sm">
+            <!-- Google Maps iframe -->
             <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d982.3387167672208!2d105.7456539285195!3d9.987516999379759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwNTknMTUuMSJOIDEwNcKwNDQnNDYuNyJF!5e0!3m2!1sen!2s!4v1752288500135!5m2!1sen!2s" 
                 style="border:0;" allowfullscreen="" loading="lazy" 
@@ -59,4 +75,4 @@ require_once __DIR__ . '/config/autoload_config.php';
     </div>
 </div>
 
-<?php include 'views/footer.php'; ?>
+<?php include 'views/footer.php'; ?> <!-- Include the website footer -->

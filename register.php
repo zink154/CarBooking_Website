@@ -1,51 +1,66 @@
 <?php
 // register.php
 
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/config/session.php';
-require_once __DIR__ . '/config/db.php';
+/**
+ * Registration page for TamHang Tourist.
+ * Features:
+ *  - Allows users to create a new account.
+ *  - Validates password confirmation.
+ *  - Checks if the email is already registered.
+ *  - Hashes the password before storing it in the database.
+ *  - Creates a verification token for email verification (future feature).
+ *  - Redirects to the login page with a success message.
+ */
+
+require_once __DIR__ . '/config/config.php';   // Load configuration constants
+require_once __DIR__ . '/config/session.php';  // Start session
+require_once __DIR__ . '/config/db.php';       // Database connection
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve form inputs
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $phone = trim($_POST['phone']);
     $password_raw = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    $type = 'unverified';
+    $type = 'unverified'; // Default account type
 
+    // Validate password confirmation
     if ($password_raw !== $confirm_password) {
-        $error = "Mật khẩu và xác nhận mật khẩu không khớp.";
+        $error = "Mật khẩu và xác nhận mật khẩu không khớp."; // Password mismatch
     } else {
+        // Hash password using bcrypt
         $password = password_hash($password_raw, PASSWORD_DEFAULT);
 
-        // Kiểm tra email đã tồn tại
+        // Check if email already exists
         $check = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
         $check->bind_param("s", $email);
         $check->execute();
         $check_result = $check->get_result();
 
         if ($check_result && $check_result->num_rows > 0) {
-            $error = "Email đã được sử dụng.";
+            $error = "Email đã được sử dụng."; // Email already in use
         } else {
-            // Thêm người dùng
+            // Insert new user into the database
             $stmt = $conn->prepare("INSERT INTO users (name, email, phone, password_hash, type) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("sssss", $name, $email, $phone, $password, $type);
+
             if ($stmt->execute()) {
                 $user_id = $conn->insert_id;
                 $_SESSION['user_id'] = $user_id;
 
-                // Tạo token xác thực (chưa gửi mail)
+                // Create verification token (for email verification)
                 $token = bin2hex(random_bytes(32));
                 $stmt_token = $conn->prepare("INSERT INTO email_verifications (user_id, token) VALUES (?, ?)");
                 $stmt_token->bind_param("is", $user_id, $token);
                 $stmt_token->execute();
 
-                // Gửi thông báo và chuyển hướng
+                // Set success message and redirect
                 $_SESSION['success'] = "Đăng ký thành công! Vui lòng đăng nhập và xác thực tài khoản.";
                 header("Location: login.php");
                 exit;
             } else {
-                $error = "Lỗi khi đăng ký tài khoản.";
+                $error = "Lỗi khi đăng ký tài khoản."; // Registration error
             }
         }
     }
@@ -53,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!-- HTML FORM -->
-<?php include 'views/header.php'; ?>
+<?php include 'views/header.php'; ?> <!-- Include header -->
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -71,10 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
             margin: 60px auto;
         }
-
         .card {
             width: 100%;
-            max-width: 400px; /* hoặc 360px nếu bạn muốn rộng chút */
+            max-width: 400px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
@@ -103,6 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card shadow">
             <div class="card-body">
                 <h3 class="card-title text-center mb-4">TẠO TÀI KHOẢN</h3>
+
+                <!-- Registration Form -->
                 <form action="register.php" method="post">
                     <div class="mb-3">
                         <label for="name" class="form-label">Họ và Tên:</label>
@@ -126,11 +142,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
                 </form>
-                <p class="mt-3 text-center">Đã có tài khoản? <a href="login.php">Đăng nhập</a></p>
+
+                <!-- Redirect to login -->
+                <p class="mt-3 text-center">
+                    Đã có tài khoản? <a href="login.php">Đăng nhập</a>
+                </p>
             </div>
         </div>
     </div>
 </body>
 </html>
 
-<?php include 'views/footer.php'; ?>
+<?php include 'views/footer.php'; ?> <!-- Include footer -->

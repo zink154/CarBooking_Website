@@ -1,7 +1,17 @@
 <?php
+// verify_notice.php
+
+/**
+ * This page provides email verification status and guidance to the user.
+ * Features:
+ *  - If `auto_resend=1` is present in the URL, it triggers `resend_verification.php` to send a new verification email.
+ *  - Displays a countdown timer (1 minute) for the verification link expiration.
+ *  - If the user has just verified their account, it shows a success message and auto-redirects to home.
+ */
+
 require_once __DIR__ . '/config/autoload_config.php';
 
-// ✅ Gửi mail trước khi in ra bất kỳ thứ gì
+// --- Auto resend verification email ---
 if (isset($_GET['auto_resend']) && $_GET['auto_resend'] == 1) {
     include __DIR__ . '/resend_verification.php';
     exit;
@@ -9,11 +19,12 @@ if (isset($_GET['auto_resend']) && $_GET['auto_resend'] == 1) {
 
 include 'views/header.php';
 
-// Nếu vừa xác thực xong
-$justVerified = isset($_SESSION['verified_success']) && $_GET['verified'] == 1;
+// --- Check if the user just verified their account ---
+$justVerified = isset($_SESSION['verified_success']) && ($_GET['verified'] ?? 0) == 1;
 $redirectTo = ($_GET['redirect'] ?? '') === 'home' ? 'index.php' : 'login.php';
+
 if ($justVerified) {
-    unset($_SESSION['verified_success']);
+    unset($_SESSION['verified_success']); // Clear the flag after displaying success
 }
 ?>
 
@@ -22,7 +33,7 @@ if ($justVerified) {
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: calc(100vh - 180px); 
+        min-height: calc(100vh - 180px);
         background-color: #eef1f5;
     }
     .verify-card {
@@ -41,6 +52,7 @@ if ($justVerified) {
 
 <div class="verify-wrapper">
     <?php if ($justVerified): ?>
+        <!-- Success message after verification -->
         <div class="verify-card">
             <h4 class="text-success mb-3">Xác thực thành công!</h4>
             <p>Bạn sẽ được chuyển đến trang chủ sau <span id="countdown">5</span> giây.</p>
@@ -59,6 +71,7 @@ if ($justVerified) {
             }, 1000);
         </script>
     <?php else: ?>
+        <!-- Waiting for email verification -->
         <div class="verify-card">
             <h4 class="mb-3">📩 Kiểm tra email của bạn</h4>
             <p>Chúng tôi đã gửi cho bạn một liên kết xác thực.</p>
