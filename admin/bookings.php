@@ -1,5 +1,10 @@
 <?php
-require_once __DIR__ . '/../config/autoload_config.php';
+// bookings.php
+
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/admin_auth.php';
 
 $filter_status = $_GET['status'] ?? 'all';
 $search_name = trim($_GET['search'] ?? '');
@@ -52,11 +57,11 @@ if ($types) $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Trạng thái và nhãn tiếng Việt
-$statuses = ['all', 'booked', 'processing', 'completed', 'cancelled'];
+$statuses = ['all', 'booked', 'confirmed', 'processing', 'completed', 'cancelled'];
 $labels = [
     'all' => 'Tất cả',
     'booked' => 'Đã đặt',
+    'confirmed' => 'Đã xác nhận',
     'processing' => 'Đang xử lý',
     'completed' => 'Hoàn tất',
     'cancelled' => 'Đã hủy'
@@ -64,14 +69,7 @@ $labels = [
 ?>
 
 <?php include __DIR__ . '/../views/header.php'; ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Quản lý đơn đặt xe</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-dark">Danh sách đơn đặt xe</h2>
@@ -110,6 +108,7 @@ $labels = [
                     <th>Giá</th>
                     <th>Trạng thái</th>
                     <th>Ngày tạo</th>
+                    <th>Cập nhật trạng thái</th>
                 </tr>
             </thead>
             <tbody>
@@ -126,6 +125,7 @@ $labels = [
                                 <?php
                                 echo match($row['status']) {
                                     'booked' => "<span class='badge bg-primary'>Đã đặt</span>",
+                                    'confirmed' => "<span class='badge bg-info'>Đã xác nhận</span>",
                                     'processing' => "<span class='badge bg-warning text-dark'>Đang xử lý</span>",
                                     'completed' => "<span class='badge bg-success'>Hoàn tất</span>",
                                     'cancelled' => "<span class='badge bg-danger'>Đã hủy</span>",
@@ -134,19 +134,36 @@ $labels = [
                                 ?>
                             </td>
                             <td><?= $row['created_at'] ?></td>
+                            <td>
+                                <form class="update-status-form" method="post">
+                                    <input type="hidden" name="booking_id" value="<?= $row['booking_id'] ?>">
+                                    <div class="d-flex gap-2">
+                                        <select name="new_status" class="form-select form-select-sm">
+                                            <?php foreach (['booked', 'confirmed', 'processing', 'completed', 'cancelled'] as $status): ?>
+                                                <option value="<?= $status ?>" <?= $row['status'] === $status ? 'selected' : '' ?>>
+                                                    <?= $labels[$status] ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">✔</button>
+                                    </div>
+                                </form>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <tr><td colspan="8" class="text-center text-muted">Không có đơn phù hợp.</td></tr>
+                    <tr><td colspan="9" class="text-center text-muted">Không có đơn phù hợp.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
     </div>
 
-    <!-- PHÂN TRANG -->
     <?php if ($total_pages > 1): ?>
         <nav class="mt-4">
             <ul class="pagination justify-content-center">
+                <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="?status=<?= $filter_status ?>&search=<?= urlencode($search_name) ?>&page=1">«</a>
+                </li>
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <li class="page-item <?= $i == $page ? 'active' : '' ?>">
                         <a class="page-link" href="?status=<?= $filter_status ?>&search=<?= urlencode($search_name) ?>&page=<?= $i ?>">
@@ -154,10 +171,31 @@ $labels = [
                         </a>
                     </li>
                 <?php endfor; ?>
+                <li class="page-item <?= $page == $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="?status=<?= $filter_status ?>&search=<?= urlencode($search_name) ?>&page=<?= $total_pages ?>">»</a>
+                </li>
             </ul>
         </nav>
     <?php endif; ?>
 </div>
-</body>
-</html>
-<?php include __DIR__ . '/../views/admin_footer.php'; ?>
+
+<script>
+document.querySelectorAll('.update-status-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        fetch('edit_booking_status.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            if (data.success) location.reload();
+        })
+        .catch(() => alert('Lỗi khi gửi yêu cầu.'));
+    });
+});
+</script>
+
+<?php include __DIR__ . '/../views/footer.php'; ?>

@@ -1,10 +1,16 @@
 
-<?php include __DIR__ . '/../views/admin_header.php';
+<?php 
 
-require_once __DIR__ . '/../config/autoload_config.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/admin_auth.php';
+
 $result = $conn->query("SELECT * FROM routes");
 $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 ?>
+
+<?php include __DIR__ . '/../views/header.php'; ?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -63,4 +69,4 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/admin_footer.php'; ?>
+<?php include __DIR__ . '/../views/footer.php'; ?>

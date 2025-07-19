@@ -8,7 +8,7 @@ if (!isset($_GET['booking_id'])) {
     exit();
 }
 
-$booking_id = $_GET['booking_id'];
+$booking_id = (int)$_GET['booking_id'];
 
 $stmt = $conn->prepare("
     SELECT b.*, c.car_brand, c.plate_number, r.departure_location, r.arrival_location 
@@ -27,13 +27,22 @@ if ($result->num_rows === 0) {
 }
 
 $booking = $result->fetch_assoc();
-$show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
 
 // Tính thời gian còn lại để thanh toán (3 phút từ created_at)
 $created_at = strtotime($booking['created_at']);
 $expire_at = $created_at + 180;
+
+// Nếu quá hạn -> hủy booking ngay
+if (time() > $expire_at) {
+    $cancel_stmt = $conn->prepare("UPDATE bookings SET status = 'cancelled' WHERE booking_id = ?");
+    $cancel_stmt->bind_param("i", $booking_id);
+    $cancel_stmt->execute();
+    header("Location: cancel_booking.php?booking_id=" . $booking_id);
+    exit();
+}
+
 $seconds_left = $expire_at - time();
-if ($seconds_left < 0) $seconds_left = 0;
+$show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
 ?>
 
 <?php include __DIR__ . '/../views/header.php'; ?>
@@ -100,11 +109,19 @@ if ($seconds_left < 0) $seconds_left = 0;
                     <p class="text-muted"><em>Vui lòng chuyển khoản đúng nội dung để được xác nhận.</em></p>
                 </div>
 
-                <form action="payment_process.php" method="post" class="text-center">
-                    <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                    <input type="hidden" name="method" value="vietqr">
-                    <button type="submit" class="btn btn-success">Tôi đã chuyển khoản</button>
-                </form>
+                <div class="d-flex justify-content-between">
+                    <a href="cancel_booking.php?booking_id=<?= $booking['booking_id'] ?>" 
+                       class="btn btn-danger"
+                       onclick="return confirm('Bạn có chắc muốn hủy đơn này?');">
+                       Hủy đơn
+                    </a>
+
+                    <form action="payment_process.php" method="post" class="m-0">
+                        <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
+                        <input type="hidden" name="method" value="vietqr">
+                        <button type="submit" class="btn btn-success">Tôi đã chuyển khoản</button>
+                    </form>
+                </div>
             <?php endif; ?>
         </div>
     </div>

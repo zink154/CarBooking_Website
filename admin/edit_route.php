@@ -1,4 +1,9 @@
-<?php include __DIR__ . '/../views/admin_header.php';
+<?php 
+
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/admin_auth.php';
 
 $back_url = $_SERVER['HTTP_REFERER'] ?? 'routes.php';
 
@@ -47,6 +52,8 @@ $route = $result->fetch_assoc();
 $departure_clean = preg_replace('/\(.*?\)/', '', $route['departure_location']);
 $arrival_clean = preg_replace('/\(.*?\)/', '', $route['arrival_location']);
 ?>
+
+<?php include __DIR__ . '/../views/header.php'; ?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -98,4 +105,4 @@ $arrival_clean = preg_replace('/\(.*?\)/', '', $route['arrival_location']);
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/admin_footer.php'; ?>
+<?php include __DIR__ . '/../views/footer.php'; ?>

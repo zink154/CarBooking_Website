@@ -1,7 +1,10 @@
+<?php 
 
-<?php include __DIR__ . '/../views/admin_header.php'; ?>
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/admin_auth.php';
 
-<?php
 // Thống kê đơn hàng
 $totalBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings")->fetch_assoc()['total'];
 $completedBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings WHERE status = 'completed'")->fetch_assoc()['total'];
@@ -12,10 +15,13 @@ $availableCars = $conn->query("SELECT COUNT(*) AS total FROM cars WHERE status =
 // Doanh thu
 $totalRevenue = $conn->query("SELECT SUM(total_price) AS total FROM bookings WHERE status = 'completed'")->fetch_assoc()['total'] ?? 0;
 
-// Đánh giá trung bình
-$avgRating = $conn->query("SELECT AVG(score) AS avg FROM ratings")->fetch_assoc()['avg'];
-$avgRating = $avgRating ? round($avgRating, 1) : "Chưa có";
+// Đánh giá trung bình và tổng số đánh giá
+$ratingData = $conn->query("SELECT AVG(score) AS avg, COUNT(*) AS total FROM ratings")->fetch_assoc();
+$avgRating = $ratingData['avg'] ? number_format($ratingData['avg'], 1) : "Chưa có";
+$totalRatings = $ratingData['total'] ?? 0;
 ?>
+
+<?php include __DIR__ . '/../views/header.php'; ?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -82,7 +88,14 @@ $avgRating = $avgRating ? round($avgRating, 1) : "Chưa có";
             <div class="card border-danger h-100">
                 <div class="card-body">
                     <h5 class="card-title"><span class="stat-icon">🌟</span> Đánh giá trung bình</h5>
-                    <p class="card-text fs-4 fw-bold"><?= $avgRating ?> ⭐</p>
+                    <?php if ($avgRating === "Chưa có"): ?>
+                        <p class="card-text fs-4 fw-bold"><?= $avgRating ?></p>
+                    <?php else: ?>
+                        <p class="card-text fs-4 fw-bold">
+                            <?= $avgRating ?> ⭐ (<?= $totalRatings ?> đánh giá)
+                        </p>
+                        <a href="all_ratings.php" class="btn btn-sm btn-outline-danger mt-2">📋 Xem tất cả đánh giá</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -92,10 +105,11 @@ $avgRating = $avgRating ? round($avgRating, 1) : "Chưa có";
         <a href="vehicles.php" class="btn btn-outline-secondary m-2">🚘 Quản lý xe</a>
         <a href="routes.php" class="btn btn-outline-secondary m-2">🛣️ Quản lý tuyến</a>
         <a href="bookings.php" class="btn btn-outline-secondary m-2">📑 Quản lý đơn</a>
+        <a href="all_ratings.php" class="btn btn-outline-secondary m-2">🌟 Quản lý đánh giá</a>
     </div>
 </div>
 
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/admin_footer.php'; ?>
+<?php include __DIR__ . '/../views/footer.php'; ?>

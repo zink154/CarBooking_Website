@@ -7,11 +7,14 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 $user_id = $_SESSION['user_id'];
 
+// Lấy danh sách đơn đặt xe kèm thông tin thanh toán
 $stmt = $conn->prepare("
-    SELECT b.*, c.car_brand, c.plate_number, r.departure_location, r.arrival_location
+    SELECT b.*, c.car_brand, c.plate_number, r.departure_location, r.arrival_location, 
+           p.status AS payment_status
     FROM bookings b
     JOIN cars c ON b.car_id = c.car_id
     JOIN routes r ON b.route_id = r.route_id
+    LEFT JOIN payments p ON b.booking_id = p.booking_id
     WHERE b.user_id = ?
     ORDER BY b.created_at DESC
 ");
@@ -19,7 +22,6 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
-
 
 <?php include __DIR__ . '/../views/header.php'; ?>
 
@@ -68,22 +70,55 @@ $result = $stmt->get_result();
                             <td>
                                 <?php
                                     $status = $booking['status'];
-                                    $badge = match($status) {
-                                        'booked' => 'warning',
-                                        'processing' => 'info',
-                                        'completed' => 'success',
-                                        'cancelled' => 'secondary',
-                                        default => 'light'
-                                    };
+                                    $badge = 'light';
+                                    $status_text = '';
+
+                                    switch ($status) {
+                                        case 'booked':
+                                            $badge = 'warning';
+                                            $status_text = 'Đã đặt';
+                                            break;
+                                        case 'confirmed':
+                                            $badge = 'primary';
+                                            $status_text = 'Đã xác nhận';
+                                            break;
+                                        case 'processing':
+                                            $badge = 'info';
+                                            $status_text = 'Đang xử lý';
+                                            break;
+                                        case 'completed':
+                                            $badge = 'success';
+                                            $status_text = 'Hoàn tất';
+                                            break;
+                                        case 'cancelled':
+                                            $badge = 'secondary';
+                                            $status_text = 'Đã hủy';
+                                            break;
+                                        default:
+                                            $status_text = 'Không xác định';
+                                    }
                                 ?>
-                                <span class="badge bg-<?= $badge ?> text-uppercase"><?= $status ?></span>
+                                <span class="badge bg-<?= $badge ?>"><?= $status_text ?></span>
                             </td>
                             <td class="text-center">
                                 <?php if ($booking['status'] === 'booked'): ?>
-                                    <form action="cancel_booking.php" method="POST" onsubmit="return confirm('Bạn chắc chắn muốn hủy đơn này?');" class="d-inline">
-                                        <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger">Hủy đơn</button>
-                                    </form>
+                                    <?php if (empty($booking['payment_status']) || $booking['payment_status'] === 'unpaid'): ?>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="payment.php?booking_id=<?= $booking['booking_id'] ?>" class="btn btn-sm btn-success">Thanh toán</a>
+                                            <form action="cancel_booking.php" method="POST" onsubmit="return confirm('Bạn chắc chắn muốn hủy đơn này?');" class="m-0">
+                                                <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
+                                                <button type="submit" class="btn btn-sm btn-danger">Hủy đơn</button>
+                                            </form>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <span class="text-success align-self-center">✔ Đã thanh toán</span>
+                                            <form action="cancel_booking.php" method="POST" onsubmit="return confirm('Bạn chắc chắn muốn hủy đơn này?');" class="m-0">
+                                                <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
+                                                <button type="submit" class="btn btn-sm btn-danger">Hủy đơn</button>
+                                            </form>
+                                        </div>
+                                    <?php endif; ?>
                                 <?php elseif ($booking['status'] === 'completed'): ?>
                                     <?php
                                     // Kiểm tra đã đánh giá chưa
@@ -111,6 +146,7 @@ $result = $stmt->get_result();
     <?php endif; ?>
 
     <div class="text-center mt-4">
+        <a href="my_ratings.php" class="btn btn-warning me-2">⭐ Xem đánh giá của tôi</a>
         <a href="<?= BASE_URL ?>/index.php" class="btn btn-outline-secondary">Về trang chủ</a>
     </div>
 </div>

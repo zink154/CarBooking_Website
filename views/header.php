@@ -1,11 +1,6 @@
 <?php
 // header.php
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/session.php';
-require_once __DIR__ . '/../config/db.php';
-
-
 $is_logged_in = isset($_SESSION['user']);
 $user_name = $is_logged_in ? $_SESSION['user']['name'] : '';
 
