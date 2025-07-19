@@ -1,15 +1,20 @@
 <?php
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/session.php';
-require_once __DIR__ . '/db.php';
+// admin_auth.php
 
-// Nếu chưa đăng nhập
+require_once __DIR__ . '/config.php';   // General configuration (constants, paths, etc.)
+require_once __DIR__ . '/session.php';  // Start session and handle session logic
+require_once __DIR__ . '/db.php';       // Database connection (if needed)
+
+// --- Check if user is logged in ---
 if (!isset($_SESSION['user'])) {
-    header("Location: ../login.php"); // dùng ../ nếu file admin nằm trong thư mục con
+    // If the user is not logged in, redirect them to the login page.
+    // "../" is used because admin files are in a subdirectory.
+    header("Location: ../login.php");
     exit;
 }
 
-// Nếu không phải admin
+// --- Check if the user is an admin ---
 if ($_SESSION['user']['type'] !== 'admin') {
-    die("Bạn không có quyền truy cập.");
+    // If the user is not an admin, show an access denied message.
+    die("Bạn không có quyền truy cập."); // "You do not have permission to access this page."
 }

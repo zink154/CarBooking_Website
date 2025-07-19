@@ -1,26 +1,43 @@
 <?php
-// all_ratings.php
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../config/session.php';
-require_once __DIR__ . '/../config/admin_auth.php';
+/**
+ * all_ratings.php
+ *
+ * This script displays all customer ratings (reviews) for vehicles.
+ * Features:
+ *  - Search functionality (filter by user name, car brand, or plate number).
+ *  - Pagination (10 ratings per page).
+ *  - Displays average score and total number of ratings.
+ *  - Data is fetched from the 'ratings', 'users', and 'cars' tables.
+ *  - Uses prepared statements to prevent SQL injection.
+ *
+ * Requirements:
+ *  - Admin must be logged in (admin_auth.php).
+ *  - Database connection (db.php).
+ */
 
-$search = trim($_GET['search'] ?? '');
-$page = max(1, intval($_GET['page'] ?? 1));
-$limit = 10;
-$offset = ($page - 1) * $limit;
+require_once __DIR__ . '/../config/config.php';    // Load configuration settings
+require_once __DIR__ . '/../config/db.php';        // Database connection
+require_once __DIR__ . '/../config/session.php';   // Session management
+require_once __DIR__ . '/../config/admin_auth.php';// Ensure only admin can access this page
+
+// --- Search and Pagination Setup ---
+$search = trim($_GET['search'] ?? '');  // Search keyword (if any)
+$page = max(1, intval($_GET['page'] ?? 1));  // Current page (default: 1)
+$limit = 10;                               // Number of rows per page
+$offset = ($page - 1) * $limit;            // Offset for SQL LIMIT
 
 $where = '';
 $params = [];
 $types = '';
 
+// If a search term is provided, build the WHERE clause
 if (!empty($search)) {
     $where = "WHERE u.name LIKE ? OR c.car_brand LIKE ? OR c.plate_number LIKE ?";
     $params = ["%$search%", "%$search%", "%$search%"];
-    $types = str_repeat('s', count($params));
+    $types = str_repeat('s', count($params)); // 's' for string type
 }
 
-// Đếm tổng số dòng
+// --- Count total rows (for pagination) ---
 $count_sql = "
     SELECT COUNT(*) AS total
     FROM ratings r
@@ -32,9 +49,9 @@ $count_stmt = $conn->prepare($count_sql);
 if (!empty($where)) $count_stmt->bind_param($types, ...$params);
 $count_stmt->execute();
 $total_rows = $count_stmt->get_result()->fetch_assoc()['total'];
-$total_pages = ceil($total_rows / $limit);
+$total_pages = ceil($total_rows / $limit);  // Total pages based on rows
 
-// Lấy dữ liệu
+// --- Fetch ratings data ---
 $sql = "
     SELECT r.*, u.name AS user_name, c.car_name, c.plate_number 
     FROM ratings r
@@ -49,10 +66,10 @@ if (!empty($where)) $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Thống kê chung
+// --- Fetch overall statistics (total ratings & average score) ---
 $stats = $conn->query("SELECT COUNT(*) AS total, AVG(score) AS avg FROM ratings")->fetch_assoc();
 $totalRatings = $stats['total'];
-$avgScore = $stats['avg'] ? number_format($stats['avg'], 1) : 'Chưa có';
+$avgScore = $stats['avg'] ? number_format($stats['avg'], 1) : 'Chưa có'; // Display "Chưa có" if no ratings
 ?>
 
 <?php include __DIR__ . '/../views/header.php'; ?>
@@ -62,8 +79,10 @@ $avgScore = $stats['avg'] ? number_format($stats['avg'], 1) : 'Chưa có';
         <a href="dashboard.php" class="btn btn-outline-secondary">← Quay về Dashboard</a>
     </div>
 
+    <!-- Display total ratings and average score -->
     <p><strong>Tổng số đánh giá:</strong> <?= $totalRatings ?> | <strong>Điểm trung bình:</strong> <?= $avgScore ?> ⭐</p>
 
+    <!-- Search form -->
     <form method="get" class="row g-2 mb-3">
         <div class="col-md-4">
             <input type="text" name="search" class="form-control" placeholder="Tìm theo tên user hoặc xe..." value="<?= htmlspecialchars($search) ?>">
@@ -78,6 +97,7 @@ $avgScore = $stats['avg'] ? number_format($stats['avg'], 1) : 'Chưa có';
         <?php endif; ?>
     </form>
 
+    <!-- Ratings Table -->
     <?php if ($result->num_rows > 0): ?>
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -104,6 +124,7 @@ $avgScore = $stats['avg'] ? number_format($stats['avg'], 1) : 'Chưa có';
             </table>
         </div>
 
+        <!-- Pagination -->
         <?php if ($total_pages > 1): ?>
             <nav class="mt-3">
                 <ul class="pagination justify-content-center">

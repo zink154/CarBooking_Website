@@ -1,13 +1,33 @@
 <?php
 // my_bookings.php
 
+/**
+ * This page displays the booking history of the logged-in user with pagination.
+ * Features:
+ *  - Fetch user's bookings with related car, route, and payment information.
+ *  - Display bookings in pages (10 bookings per page).
+ *  - Show booking details and available actions (payment, cancel, rate).
+ */
+
 require_once __DIR__ . '/../config/auth.php';
 
-date_default_timezone_set('Asia/Ho_Chi_Minh');
+date_default_timezone_set('Asia/Ho_Chi_Minh'); 
 
 $user_id = $_SESSION['user_id'];
 
-// Lấy danh sách đơn đặt xe kèm thông tin thanh toán
+// --- Pagination setup ---
+$limit = 10; // Number of bookings per page
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$offset = ($page - 1) * $limit;
+
+// --- Get total bookings count ---
+$countStmt = $conn->prepare("SELECT COUNT(*) AS total FROM bookings WHERE user_id = ?");
+$countStmt->bind_param("i", $user_id);
+$countStmt->execute();
+$totalRows = $countStmt->get_result()->fetch_assoc()['total'];
+$totalPages = ceil($totalRows / $limit);
+
+// --- Fetch bookings with limit and offset ---
 $stmt = $conn->prepare("
     SELECT b.*, c.car_brand, c.plate_number, r.departure_location, r.arrival_location, 
            p.status AS payment_status
@@ -17,8 +37,9 @@ $stmt = $conn->prepare("
     LEFT JOIN payments p ON b.booking_id = p.booking_id
     WHERE b.user_id = ?
     ORDER BY b.created_at DESC
+    LIMIT ? OFFSET ?
 ");
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("iii", $user_id, $limit, $offset);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -36,6 +57,7 @@ $result = $stmt->get_result();
 <div class="container py-5">
     <h2 class="mb-4 text-center">Lịch sử đặt xe của bạn</h2>
 
+    <!-- Display session success message -->
     <?php if (isset($_SESSION['success'])): ?>
         <div class="alert alert-success">
             <?= $_SESSION['success']; unset($_SESSION['success']); ?>
@@ -121,7 +143,7 @@ $result = $stmt->get_result();
                                     <?php endif; ?>
                                 <?php elseif ($booking['status'] === 'completed'): ?>
                                     <?php
-                                    // Kiểm tra đã đánh giá chưa
+                                    // Check if the booking has been rated
                                     $checkRating = $conn->prepare("SELECT * FROM ratings WHERE booking_id = ?");
                                     $checkRating->bind_param("i", $booking['booking_id']);
                                     $checkRating->execute();
@@ -141,6 +163,26 @@ $result = $stmt->get_result();
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination -->
+        <?php if ($totalPages > 1): ?>
+            <nav aria-label="Page navigation" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+                        <a class="page-link" href="?page=1">«</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li class="page-item <?= ($page >= $totalPages) ? 'disabled' : '' ?>">
+                        <a class="page-link" href="?page=<?= $totalPages ?>">»</a>
+                    </li>
+                </ul>
+            </nav>
+        <?php endif; ?>
+
     <?php else: ?>
         <div class="alert alert-info text-center">Bạn chưa có đơn đặt xe nào.</div>
     <?php endif; ?>

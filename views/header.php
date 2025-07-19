@@ -1,14 +1,22 @@
 <?php
 // header.php
 
+/**
+ * This file generates the navigation bar and fixed action buttons.
+ * Features:
+ *  - Detect user login status and display personalized menu.
+ *  - Show admin dashboard link if the user is an admin.
+ *  - Display a verification alert for unverified accounts.
+ *  - Provide fixed action buttons for Messenger, TikTok, and Google Maps.
+ */
+
 $is_logged_in = isset($_SESSION['user']);
 $user_name = $is_logged_in ? $_SESSION['user']['name'] : '';
 
 if ($is_logged_in) {
-    // Cập nhật lại user_role mỗi lần load (tránh cache sai sau khi xác thực)
+    // Update user role each time to prevent stale cache after authentication
     $user_role = $_SESSION['user']['type'];
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -21,22 +29,22 @@ if ($is_logged_in) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/styles.css">
-        <style>
-        /* Màu nền navbar */
+
+    <style>
+        /* Navbar background color */
         .navbar-custom {
             background-color: #fcb213 !important;
         }
 
-        /* In đậm toàn bộ chữ navbar */
+        /* Make navbar text bold and black */
         .navbar .nav-link {
-            color: #000 !important; /* Đặt màu chữ thành đen */
+            color: #000 !important;
             font-weight: 700;
             transition: all 0.2s ease;
             text-align: center;
-            display: block;
         }
 
-        /* Hiển thị dropdown khi hover */
+        /* Show dropdown on hover */
         .navbar-nav .dropdown:hover .dropdown-menu {
             display: block;
             opacity: 1;
@@ -50,15 +58,7 @@ if ($is_logged_in) {
             position: absolute;
         }
 
-        .navbar-nav .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-        }
-        .navbar .nav-link {
-        font-weight: 700;
-        transition: all 0.2s ease;
-        }
-
+        /* Hover styles for navbar links */
         .navbar .nav-link:hover,
         .navbar .nav-link.active {
             background-color: #0d6efd;
@@ -67,6 +67,7 @@ if ($is_logged_in) {
             padding: 6px 12px;
         }
 
+        /* Fixed action buttons on the right side */
         .fixed-buttons {
             position: fixed;
             bottom: 150px;
@@ -77,25 +78,17 @@ if ($is_logged_in) {
             gap: 10px;
         }
 
-        .fixed-buttons a {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative; /* Để dùng ::after */
-        }
-
         .fixed-buttons img.fixed-icon {
             width: 40px;
             height: 40px;
             object-fit: contain;
         }
 
-        /* Tooltip khi hover vào nút Messenger */
+        /* Tooltip on hover for fixed buttons */
         .fixed-buttons a:hover::after {
-            content: attr(data-tooltip); /* Lấy nội dung từ thuộc tính data-tooltip */
+            content: attr(data-tooltip);
             position: absolute;
-            right: 130%; /* Hiển thị bên trái icon */
+            right: 130%;
             top: 50%;
             transform: translateY(-50%);
             background-color: #fcb213;
@@ -107,13 +100,8 @@ if ($is_logged_in) {
             box-shadow: 0 0 5px rgba(0,0,0,0.2);
         }
         
-        .btn-yellow {
-            background-color: #fcb213 !important;
-            color: black !important;
-            font-weight: 600;
-            border: none;
-        }
-
+        /* Custom yellow buttons */
+        .btn-yellow,
         .bg-yellow {
             background-color: #fcb213 !important;
             color: black !important;
@@ -126,6 +114,7 @@ if ($is_logged_in) {
             color: black !important;
         }
 
+        /* Contact button glow animation */
         .contact-button {
             padding: 12px 24px;
             font-size: 18px;
@@ -133,7 +122,6 @@ if ($is_logged_in) {
             border-radius: 8px;
             color: #fcb213;
             background-color: white;
-            text-decoration: none;
             transition: all 0.3s ease;
             animation: glowPulse 1.5s infinite;
         }
@@ -156,34 +144,25 @@ if ($is_logged_in) {
             }
         }
     </style>
-
 </head>
 <body>
 
-    <!-- Nút cố định bên trái -->
+    <!-- Fixed action buttons -->
     <div class="fixed-buttons">
-
-        <!-- Nút Messenger với tooltip -->
         <a href="https://www.facebook.com/profile.php?id=61561758564355" target="_blank" data-tooltip="Messenger">
             <img src="<?= BASE_URL ?>/images/assets/icons/Messenger.png" alt="Messenger" class="fixed-icon">
         </a>
-
-        <!-- Nút Tiktok với tooltip -->
         <a href="https://www.tiktok.com/@tm.hng.tourist" target="_blank" data-tooltip="Tiktok">
-            <img src="<?= BASE_URL ?>/images/assets/icons/tiktok.png" alt="Messenger" class="fixed-icon">
+            <img src="<?= BASE_URL ?>/images/assets/icons/tiktok.png" alt="Tiktok" class="fixed-icon">
         </a>
-
-        <!-- Nút Google Maps -->
         <a href="https://www.google.com/maps?ll=9.987448,105.745761&z=18&t=m&hl=en&gl=US&mapclient=embed&q=9°59%2715.1%22N+105°44%2746.7%22E+9.987528,+105.746306@9.987527799999999,105.7463056" 
-        target="_blank" 
-        data-tooltip="Google Maps">
+           target="_blank" data-tooltip="Google Maps">
             <img src="<?= BASE_URL ?>/images/assets/icons/map.png" alt="Google Maps" class="fixed-icon">
         </a>
-        
     </div>
 
     <header class="main-header">
-        <!-- Thanh điều hướng -->
+        <!-- Navigation bar -->
         <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
             <div class="container">
                 <!-- Logo -->
@@ -192,13 +171,12 @@ if ($is_logged_in) {
                     <span>TamHang Tourist</span>
                 </a>
 
-                
-                <!-- Nút Toggle cho màn hình nhỏ -->
+                <!-- Toggle button for small screens -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- Menu điều hướng -->
+                <!-- Navigation menu -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto text-center">
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/index.php">TRANG CHỦ</a></li>
@@ -217,7 +195,7 @@ if ($is_logged_in) {
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DỊCH VỤ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/contact.php">LIÊN HỆ</a></li>
 
-                        <!-- Hiển thị thông tin người dùng -->
+                        <!-- User menu -->
                         <?php if ($is_logged_in): ?>
                             <li class="nav-item dropdown position-relative">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" aria-expanded="false">
@@ -226,9 +204,9 @@ if ($is_logged_in) {
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/profile.php">Hồ sơ của tôi</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/my_bookings.php">Lịch sử đặt xe</a></li>
-                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>change_password.php">Đổi mật khẩu</a></li> <!-- Đổi mật khẩu -->
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>change_password.php">Đổi mật khẩu</a></li>
                                     
-                                    <!-- Hiển thị Dashboard nếu là admin -->
+                                    <!-- Show Dashboard if user is admin -->
                                     <?php if ($user_role === 'admin'): ?>
                                         <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/dashboard.php">Truy cập Dashboard</a></li>
                                     <?php endif; ?>
@@ -246,19 +224,19 @@ if ($is_logged_in) {
             </div>
         </nav>
 
-
-    <?php if ($is_logged_in && $user_role === 'unverified'): ?>
-    <div class="alert alert-warning text-center m-0" style="border-radius: 0;">
-        ⚠️ Tài khoản của bạn chưa được xác thực. <a href="<?= BASE_URL ?>/verify_notice.php?auto_resend=1" class="alert-link">Bấm vào đây để xác thực</a>.
-    </div>
-    <?php endif; ?>
-    
+        <!-- Verification alert for unverified accounts -->
+        <?php if ($is_logged_in && $user_role === 'unverified'): ?>
+        <div class="alert alert-warning text-center m-0" style="border-radius: 0;">
+            ⚠️ Tài khoản của bạn chưa được xác thực. <a href="<?= BASE_URL ?>/verify_notice.php?auto_resend=1" class="alert-link">Bấm vào đây để xác thực</a>.
+        </div>
+        <?php endif; ?>
     </header>
-    <!-- Thêm Bootstrap JS -->
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Ensure dropdown links (car categories) redirect correctly on click
         document.getElementById("carDropdown").addEventListener("click", function (e) {
-            // Nếu đang mở dropdown thì vẫn cho click chuyển trang
             window.location.href = "<?= BASE_URL ?>/car_categories.php";
         });
     </script>

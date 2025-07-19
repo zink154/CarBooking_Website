@@ -1,15 +1,27 @@
 <?php
 // payment.php
 
-require_once __DIR__ . '/../config/auth.php';
+/**
+ * This page handles the payment process for a specific booking.
+ * Features:
+ *  - Display booking details (car, route, price).
+ *  - Allow the user to choose a payment method (VietQR or cash).
+ *  - Show a countdown timer (3 minutes) for payment confirmation.
+ *  - Automatically cancel the booking if payment is not made within the time limit.
+ *  - Generate a VietQR payment code if the user selects "VietQR".
+ */
 
+require_once __DIR__ . '/../config/auth.php'; // Ensure the user is logged in
+
+// --- Validate booking_id from query parameters ---
 if (!isset($_GET['booking_id'])) {
-    echo "Thiếu mã đơn đặt xe.";
+    echo "Thiếu mã đơn đặt xe."; // "Missing booking ID."
     exit();
 }
 
 $booking_id = (int)$_GET['booking_id'];
 
+// --- Fetch booking details ---
 $stmt = $conn->prepare("
     SELECT b.*, c.car_brand, c.plate_number, r.departure_location, r.arrival_location 
     FROM bookings b
@@ -22,17 +34,17 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    echo "Không tìm thấy đơn đặt xe.";
+    echo "Không tìm thấy đơn đặt xe."; // "Booking not found."
     exit();
 }
 
 $booking = $result->fetch_assoc();
 
-// Tính thời gian còn lại để thanh toán (3 phút từ created_at)
+// --- Calculate remaining payment time (3 minutes after booking created_at) ---
 $created_at = strtotime($booking['created_at']);
-$expire_at = $created_at + 180;
+$expire_at = $created_at + 180; // 180 seconds = 3 minutes
 
-// Nếu quá hạn -> hủy booking ngay
+// --- Cancel booking if expired ---
 if (time() > $expire_at) {
     $cancel_stmt = $conn->prepare("UPDATE bookings SET status = 'cancelled' WHERE booking_id = ?");
     $cancel_stmt->bind_param("i", $booking_id);
@@ -42,7 +54,7 @@ if (time() > $expire_at) {
 }
 
 $seconds_left = $expire_at - time();
-$show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
+$show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr'; // Determine if QR code should be shown
 ?>
 
 <?php include __DIR__ . '/../views/header.php'; ?>
@@ -60,17 +72,20 @@ $show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
         <div class="card-body">
             <h3 class="mb-4">Thanh toán đơn đặt xe</h3>
 
+            <!-- Booking details -->
             <ul class="list-group mb-4">
                 <li class="list-group-item"><strong>Xe:</strong> <?= $booking['car_brand'] ?> (<?= $booking['plate_number'] ?>)</li>
                 <li class="list-group-item"><strong>Tuyến:</strong> <?= $booking['departure_location'] ?> → <?= $booking['arrival_location'] ?></li>
                 <li class="list-group-item"><strong>Tổng tiền:</strong> <?= number_format($booking['total_price'], 0, ',', '.') ?> VNĐ</li>
             </ul>
 
+            <!-- Countdown timer -->
             <div id="countdown" class="text-danger fw-bold text-center mb-3">
                 Thời gian còn lại để thanh toán: <span id="timer"></span>
             </div>
 
             <?php if (!$show_qr): ?>
+                <!-- Payment method selection form -->
                 <form method="post">
                     <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
                     <div class="mb-3">
@@ -87,6 +102,7 @@ $show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
                     <button type="submit" class="btn btn-primary">Tiếp tục</button>
                 </form>
             <?php else: ?>
+                <!-- Generate VietQR code -->
                 <?php
                 $amount = $booking['total_price'];
                 $description = 'Dat xe ' . $booking['booking_id'];
@@ -95,6 +111,7 @@ $show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
                 $template = 'compact2';
                 $account_name = 'Tu Phuong Vinh';
 
+                // Build QR code URL
                 $qr_url = "https://img.vietqr.io/image/{$bank_id}-{$account_no}-{$template}.png"
                         . "?amount={$amount}"
                         . "&addInfo=" . urlencode($description)
@@ -109,6 +126,7 @@ $show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
                     <p class="text-muted"><em>Vui lòng chuyển khoản đúng nội dung để được xác nhận.</em></p>
                 </div>
 
+                <!-- Cancel and confirm payment -->
                 <div class="d-flex justify-content-between">
                     <a href="cancel_booking.php?booking_id=<?= $booking['booking_id'] ?>" 
                        class="btn btn-danger"
@@ -127,7 +145,7 @@ $show_qr = isset($_POST['method']) && $_POST['method'] === 'vietqr';
     </div>
 </div>
 
-<!-- Timer JS -->
+<!-- Countdown Timer JS -->
 <script>
     let secondsLeft = <?= $seconds_left ?>;
 

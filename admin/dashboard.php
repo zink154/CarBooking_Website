@@ -1,24 +1,39 @@
 <?php 
+/**
+ * dashboard.php
+ *
+ * This script displays the admin dashboard with an overview of the system.
+ * It includes:
+ *  - Total bookings and completed bookings.
+ *  - Total number of cars currently available.
+ *  - Total revenue from completed bookings.
+ *  - Average rating and total number of ratings.
+ *  - Quick navigation links to manage vehicles, routes, bookings, and ratings.
+ *
+ * Requirements:
+ *  - Admin must be logged in (admin_auth.php).
+ *  - Database connection (db.php).
+ */
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../config/session.php';
-require_once __DIR__ . '/../config/admin_auth.php';
+require_once __DIR__ . '/../config/config.php';    // General configuration
+require_once __DIR__ . '/../config/db.php';        // Database connection
+require_once __DIR__ . '/../config/session.php';   // Session handling
+require_once __DIR__ . '/../config/admin_auth.php';// Admin authentication check
 
-// Thống kê đơn hàng
-$totalBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings")->fetch_assoc()['total'];
-$completedBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings WHERE status = 'completed'")->fetch_assoc()['total'];
+// --- Booking statistics ---
+$totalBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings")->fetch_assoc()['total']; // Total bookings
+$completedBookings = $conn->query("SELECT COUNT(*) AS total FROM bookings WHERE status = 'completed'")->fetch_assoc()['total']; // Completed bookings
 
-// Thống kê xe
-$availableCars = $conn->query("SELECT COUNT(*) AS total FROM cars WHERE status = 'available'")->fetch_assoc()['total'];
+// --- Car statistics ---
+$availableCars = $conn->query("SELECT COUNT(*) AS total FROM cars WHERE status = 'available'")->fetch_assoc()['total']; // Cars available
 
-// Doanh thu
+// --- Revenue statistics ---
 $totalRevenue = $conn->query("SELECT SUM(total_price) AS total FROM bookings WHERE status = 'completed'")->fetch_assoc()['total'] ?? 0;
 
-// Đánh giá trung bình và tổng số đánh giá
+// --- Rating statistics (average score & total ratings) ---
 $ratingData = $conn->query("SELECT AVG(score) AS avg, COUNT(*) AS total FROM ratings")->fetch_assoc();
-$avgRating = $ratingData['avg'] ? number_format($ratingData['avg'], 1) : "Chưa có";
-$totalRatings = $ratingData['total'] ?? 0;
+$avgRating = $ratingData['avg'] ? number_format($ratingData['avg'], 1) : "Chưa có"; // Average rating
+$totalRatings = $ratingData['total'] ?? 0; // Total number of ratings
 ?>
 
 <?php include __DIR__ . '/../views/header.php'; ?>
@@ -51,7 +66,9 @@ $totalRatings = $ratingData['total'] ?? 0;
 <div class="dashboard-container">
     <h2 class="mb-4 text-center fw-bold">📊 Tổng quan hệ thống</h2>
 
+    <!-- Dashboard Statistics Cards -->
     <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+        <!-- Total Bookings -->
         <div class="col">
             <div class="card border-success h-100">
                 <div class="card-body">
@@ -60,6 +77,7 @@ $totalRatings = $ratingData['total'] ?? 0;
                 </div>
             </div>
         </div>
+        <!-- Completed Bookings -->
         <div class="col">
             <div class="card border-info h-100">
                 <div class="card-body">
@@ -68,6 +86,7 @@ $totalRatings = $ratingData['total'] ?? 0;
                 </div>
             </div>
         </div>
+        <!-- Available Cars -->
         <div class="col">
             <div class="card border-primary h-100">
                 <div class="card-body">
@@ -76,6 +95,7 @@ $totalRatings = $ratingData['total'] ?? 0;
                 </div>
             </div>
         </div>
+        <!-- Total Revenue -->
         <div class="col">
             <div class="card border-warning h-100">
                 <div class="card-body">
@@ -84,6 +104,7 @@ $totalRatings = $ratingData['total'] ?? 0;
                 </div>
             </div>
         </div>
+        <!-- Average Ratings -->
         <div class="col">
             <div class="card border-danger h-100">
                 <div class="card-body">
@@ -94,6 +115,7 @@ $totalRatings = $ratingData['total'] ?? 0;
                         <p class="card-text fs-4 fw-bold">
                             <?= $avgRating ?> ⭐ (<?= $totalRatings ?> đánh giá)
                         </p>
+                        <!-- Link to all ratings page -->
                         <a href="all_ratings.php" class="btn btn-sm btn-outline-danger mt-2">📋 Xem tất cả đánh giá</a>
                     <?php endif; ?>
                 </div>
@@ -101,6 +123,7 @@ $totalRatings = $ratingData['total'] ?? 0;
         </div>
     </div>
 
+    <!-- Quick navigation buttons -->
     <div class="text-center">
         <a href="vehicles.php" class="btn btn-outline-secondary m-2">🚘 Quản lý xe</a>
         <a href="routes.php" class="btn btn-outline-secondary m-2">🛣️ Quản lý tuyến</a>

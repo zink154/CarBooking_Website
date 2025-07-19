@@ -1,17 +1,27 @@
 <?php
 // rate_booking.php
 
-require_once __DIR__ . '/../config/auth.php';
+/**
+ * This page allows the logged-in user to rate a completed booking.
+ * Features:
+ *  - Display car details (brand and plate number).
+ *  - Provide a star rating input (1 to 5 stars).
+ *  - Provide a comment box for additional feedback.
+ *  - Submit the rating to rate_booking_process.php.
+ */
 
+require_once __DIR__ . '/../config/auth.php'; // Ensure user is logged in
+
+// --- Validate booking_id from URL ---
 if (!isset($_GET['booking_id'])) {
-    echo "Thiếu mã đơn.";
+    echo "Thiếu mã đơn."; // "Missing booking ID."
     exit();
 }
 
 $booking_id = (int)$_GET['booking_id'];
 $user_id = $_SESSION['user_id'];
 
-// Lấy thông tin đơn đặt xe đã hoàn tất
+// --- Fetch booking details (only completed bookings) ---
 $stmt = $conn->prepare("
     SELECT b.*, c.car_brand, c.plate_number 
     FROM bookings b
@@ -23,7 +33,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    echo "Không tìm thấy đơn hoàn tất để đánh giá.";
+    echo "Không tìm thấy đơn hoàn tất để đánh giá."; // "No completed booking found to rate."
     exit();
 }
 
@@ -39,6 +49,7 @@ $booking = $result->fetch_assoc();
     <title>Đánh giá chuyến đi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Star rating style */
         .star-rating {
             direction: rtl;
             font-size: 1.5rem;
@@ -63,14 +74,17 @@ $booking = $result->fetch_assoc();
 <div class="container py-5">
     <div class="card shadow-sm mx-auto" style="max-width: 600px;">
         <div class="card-body">
+            <!-- Booking details -->
             <h3 class="card-title text-center mb-4">
                 Đánh giá xe: <?= htmlspecialchars($booking['car_brand']) ?> (<?= htmlspecialchars($booking['plate_number']) ?>)
             </h3>
 
+            <!-- Rating form -->
             <form action="rate_booking_process.php" method="POST">
                 <input type="hidden" name="booking_id" value="<?= $booking_id ?>">
                 <input type="hidden" name="car_id" value="<?= $booking['car_id'] ?>">
 
+                <!-- Star rating input -->
                 <div class="mb-4 text-center">
                     <label class="form-label d-block">Chọn số sao:</label>
                     <div class="star-rating mx-auto">
@@ -82,11 +96,13 @@ $booking = $result->fetch_assoc();
                     </div>
                 </div>
 
+                <!-- Comment box -->
                 <div class="mb-4">
                     <label for="comment" class="form-label">Nhận xét:</label>
                     <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Viết nhận xét của bạn..." required></textarea>
                 </div>
 
+                <!-- Form buttons -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary px-4">Gửi đánh giá</button>
                     <a href="my_bookings.php" class="btn btn-outline-secondary px-4">Quay lại</a>

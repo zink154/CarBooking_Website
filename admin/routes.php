@@ -1,12 +1,28 @@
-
 <?php 
+/**
+ * routes.php
+ *
+ * This page displays the list of routes in the system for admin management.
+ * Features:
+ *  - List all routes (with departure, arrival, distance, and status).
+ *  - Show route status (available or unavailable) using a badge.
+ *  - Provide actions to edit a route or mark it as unavailable (via delete_route.php).
+ *  - Allow admin to add new routes.
+ *
+ * Requirements:
+ *  - Admin must be logged in (admin_auth.php).
+ *  - Database connection (db.php).
+ */
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../config/session.php';
-require_once __DIR__ . '/../config/admin_auth.php';
+require_once __DIR__ . '/../config/config.php';    // General configuration
+require_once __DIR__ . '/../config/db.php';        // Database connection
+require_once __DIR__ . '/../config/session.php';   // Session handling
+require_once __DIR__ . '/../config/admin_auth.php';// Admin authentication
 
+// --- Fetch all routes ---
 $result = $conn->query("SELECT * FROM routes");
+
+// Back URL (previous page or vehicles.php as default)
 $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 ?>
 
@@ -21,6 +37,7 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
 </head>
 <body class="bg-light">
   <div class="container py-4">
+    <!-- Page title and action buttons -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">Danh sách tuyến</h2>
         <div class="d-flex gap-2">
@@ -30,10 +47,11 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
         </div>
     </div>
 
+    <!-- Routes Table -->
     <div class="table-responsive">
       <table class="table table-bordered table-hover bg-white shadow-sm">
         <thead class="table-primary">
-          <tr>
+          <tr class="text-center">
             <th>ID</th>
             <th>Điểm đi</th>
             <th>Điểm đến</th>
@@ -43,25 +61,44 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
           </tr>
         </thead>
         <tbody>
-          <?php while ($route = $result->fetch_assoc()): ?>
+          <?php if ($result->num_rows > 0): ?>
+            <?php while ($route = $result->fetch_assoc()): ?>
+              <tr>
+                <td class="text-center"><?= htmlspecialchars($route['route_id']) ?></td>
+                <td><?= htmlspecialchars($route['departure_location']) ?></td>
+                <td><?= htmlspecialchars($route['arrival_location']) ?></td>
+                <td class="text-center">
+                  <?= htmlspecialchars(rtrim(rtrim($route['distance_km'], '0'), '.')) ?>
+                </td>
+                <td class="text-center">
+                  <?php
+                  // Display status with colored badges
+                  echo $route['status'] === 'available'
+                      ? '<span class="badge bg-success">Hoạt động</span>'
+                      : '<span class="badge bg-secondary">Ngưng hoạt động</span>';
+                  ?>
+                </td>
+                <td class="text-center">
+                  <a href="edit_route.php?id=<?= $route['route_id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
+                  <?php if ($route['status'] === 'available'): ?>
+                      <!-- Only show "Ngưng" button for active routes -->
+                      <a href="delete_route.php?id=<?= $route['route_id'] ?>" 
+                         class="btn btn-danger btn-sm"
+                         onclick="return confirm('Xác nhận ngưng tuyến này?')">Ngưng</a>
+                  <?php else: ?>
+                      <!-- Optionally, add restore button -->
+                      <a href="restore_route.php?id=<?= $route['route_id'] ?>" 
+                         class="btn btn-success btn-sm"
+                         onclick="return confirm('Khôi phục tuyến này?')">Khôi phục</a>
+                  <?php endif; ?>
+                </td>
+              </tr>
+            <?php endwhile; ?>
+          <?php else: ?>
             <tr>
-              <td><?= htmlspecialchars($route['route_id']) ?></td>
-              <td><?= htmlspecialchars($route['departure_location']) ?></td>
-              <td><?= htmlspecialchars($route['arrival_location']) ?></td>
-              <td><?= htmlspecialchars(rtrim(rtrim($route['distance_km'], '0'), '.')) ?></td>
-              <td class="text-center">
-                <?php
-                echo $route['status'] === 'available'
-                    ? '<span class="badge bg-success">Hoạt động</span>'
-                    : '<span class="badge bg-secondary">Ngưng hoạt động</span>';
-                ?>
-              </td>
-              <td>
-                <a href="edit_route.php?id=<?= $route['route_id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
-                <a href="delete_route.php?id=<?= $route['route_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xác nhận xóa tuyến này?')">Xóa</a>
-              </td>
+              <td colspan="6" class="text-center text-muted">Không có tuyến đường nào.</td>
             </tr>
-          <?php endwhile; ?>
+          <?php endif; ?>
         </tbody>
       </table>
     </div>

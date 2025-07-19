@@ -1,17 +1,33 @@
 <?php
-// bookings.php
+/**
+ * bookings.php
+ *
+ * This script displays the list of all car bookings for admin management.
+ * Features:
+ *  - Filter bookings by status (all, booked, confirmed, etc.).
+ *  - Search bookings by customer name.
+ *  - Pagination with 10 bookings per page.
+ *  - Display booking details (customer, car, route, pickup/return time, price, status).
+ *  - Allows admin to update the booking status using AJAX (fetch to edit_booking_status.php).
+ *
+ * Requirements:
+ *  - Admin must be logged in (admin_auth.php).
+ *  - Database connection (db.php).
+ */
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../config/session.php';
-require_once __DIR__ . '/../config/admin_auth.php';
+require_once __DIR__ . '/../config/config.php';    // General configuration
+require_once __DIR__ . '/../config/db.php';        // Database connection
+require_once __DIR__ . '/../config/session.php';   // Session management
+require_once __DIR__ . '/../config/admin_auth.php';// Admin authentication
 
-$filter_status = $_GET['status'] ?? 'all';
-$search_name = trim($_GET['search'] ?? '');
-$page = max(1, intval($_GET['page'] ?? 1));
-$limit = 10;
-$offset = ($page - 1) * $limit;
+// --- Retrieve filters and pagination parameters ---
+$filter_status = $_GET['status'] ?? 'all';     // Booking status filter
+$search_name = trim($_GET['search'] ?? '');    // Customer name search keyword
+$page = max(1, intval($_GET['page'] ?? 1));    // Current page (default is 1)
+$limit = 10;                                  // Rows per page
+$offset = ($page - 1) * $limit;                // Offset for SQL LIMIT
 
+// --- Build WHERE conditions based on filters ---
 $where = [];
 $params = [];
 $types = '';
@@ -30,6 +46,7 @@ if (!empty($search_name)) {
 
 $where_clause = count($where) ? 'WHERE ' . implode(' AND ', $where) : '';
 
+// --- Count total bookings (for pagination) ---
 $count_sql = "
     SELECT COUNT(*) AS total
     FROM bookings b
@@ -42,6 +59,7 @@ $count_stmt->execute();
 $total_rows = $count_stmt->get_result()->fetch_assoc()['total'];
 $total_pages = ceil($total_rows / $limit);
 
+// --- Fetch bookings with user, car, and route info ---
 $sql = "
     SELECT b.*, u.name AS user_name, c.car_brand, c.plate_number, r.departure_location, r.arrival_location
     FROM bookings b
@@ -57,6 +75,7 @@ if ($types) $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
+// --- Booking statuses and labels ---
 $statuses = ['all', 'booked', 'confirmed', 'processing', 'completed', 'cancelled'];
 $labels = [
     'all' => 'Tất cả',
@@ -76,6 +95,7 @@ $labels = [
         <a href="dashboard.php" class="btn btn-outline-secondary">← Về trang quản trị</a>
     </div>
 
+    <!-- Filter and search form -->
     <form class="row g-3 align-items-end mb-4" method="GET">
         <div class="col-md-3">
             <label class="form-label">Lọc theo trạng thái</label>
@@ -96,6 +116,7 @@ $labels = [
         </div>
     </form>
 
+    <!-- Bookings Table -->
     <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle bg-white shadow-sm">
             <thead class="table-primary text-center">
@@ -123,6 +144,7 @@ $labels = [
                             <td class="text-end"><?= number_format($row['total_price'], 0) ?> VND</td>
                             <td class="text-center">
                                 <?php
+                                // Display status badge with colors
                                 echo match($row['status']) {
                                     'booked' => "<span class='badge bg-primary'>Đã đặt</span>",
                                     'confirmed' => "<span class='badge bg-info'>Đã xác nhận</span>",
@@ -135,6 +157,7 @@ $labels = [
                             </td>
                             <td><?= $row['created_at'] ?></td>
                             <td>
+                                <!-- Form to update booking status -->
                                 <form class="update-status-form" method="post">
                                     <input type="hidden" name="booking_id" value="<?= $row['booking_id'] ?>">
                                     <div class="d-flex gap-2">
@@ -158,6 +181,7 @@ $labels = [
         </table>
     </div>
 
+    <!-- Pagination -->
     <?php if ($total_pages > 1): ?>
         <nav class="mt-4">
             <ul class="pagination justify-content-center">
@@ -179,6 +203,7 @@ $labels = [
     <?php endif; ?>
 </div>
 
+<!-- AJAX script for updating booking status -->
 <script>
 document.querySelectorAll('.update-status-form').forEach(form => {
     form.addEventListener('submit', function(e) {

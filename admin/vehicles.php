@@ -1,14 +1,27 @@
 <?php 
+/**
+ * vehicles.php
+ *
+ * This page displays a list of all vehicles in the system for admin management.
+ * Features:
+ *  - Show details of each vehicle (name, type, brand, plate number, price, capacity, status, image).
+ *  - Action buttons for editing or marking a vehicle as unavailable (delete_vehicle.php).
+ *  - Quick navigation to add a new vehicle or manage routes.
+ *
+ * Requirements:
+ *  - Admin must be logged in (admin_auth.php).
+ *  - Database connection (db.php).
+ */
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../config/session.php';
-require_once __DIR__ . '/../config/admin_auth.php';
+require_once __DIR__ . '/../config/config.php';    // General configuration
+require_once __DIR__ . '/../config/db.php';        // Database connection
+require_once __DIR__ . '/../config/session.php';   // Session handling
+require_once __DIR__ . '/../config/admin_auth.php';// Admin authentication
 
+// --- Fetch all cars from the database ---
 $result = $conn->query("SELECT * FROM cars");
-?>
 
-<?php
+// Back button URL (previous page or default dashboard.php)
 $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
 ?>
 
@@ -31,6 +44,7 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
 <body class="bg-light">
 
 <div class="container py-4 px-4 px-md-5">
+    <!-- Page title and action buttons -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">Danh sách xe</h2>
         <div class="d-flex gap-2">
@@ -40,6 +54,7 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
         </div>
     </div>
 
+    <!-- Vehicles table -->
     <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle shadow-sm bg-white">
             <thead class="table-dark">
@@ -68,9 +83,10 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
                         <td><?= $car['capacity'] ?></td>
                         <td>
                             <?php
+                                // Display status with a badge
                                 switch ($car['status']) {
                                     case 'maintenance':
-                                        echo '<span class="badge bg-danger">Ngưng hoạt động</span>';
+                                        echo '<span class="badge bg-danger">Bảo trì</span>';
                                         break;
                                     case 'available':
                                         echo '<span class="badge bg-success">Sẵn sàng</span>';
@@ -78,8 +94,11 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
                                     case 'in_use':
                                         echo '<span class="badge bg-warning text-dark">Đang sử dụng</span>';
                                         break;
+                                    case 'unavailable':
+                                        echo '<span class="badge bg-secondary">Ngưng hoạt động</span>';
+                                        break;
                                     default:
-                                        echo '<span class="badge bg-secondary">' . ucfirst($car['status']) . '</span>';
+                                        echo '<span class="badge bg-light text-dark">' . htmlspecialchars($car['status']) . '</span>';
                                 }
                             ?>
                         </td>
@@ -92,7 +111,9 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
                         </td>
                         <td>
                             <a href="edit_vehicle.php?id=<?= $car['car_id'] ?>" class="btn btn-sm btn-primary">Sửa</a>
-                            <a href="delete_vehicle.php?id=<?= $car['car_id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Xác nhận xóa xe này?')">Xóa</a>
+                            <a href="delete_vehicle.php?id=<?= $car['car_id'] ?>" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Xác nhận ngưng hoạt động xe này?')">Ngưng</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>

@@ -1,19 +1,31 @@
 <?php
 // my_ratings.php
-require_once __DIR__ . '/../config/auth.php';
+
+/**
+ * This page displays all ratings/reviews created by the logged-in user.
+ * Features:
+ *  - Display total ratings and average score.
+ *  - Search ratings by car name or license plate.
+ *  - Pagination to limit the number of ratings displayed per page.
+ *  - Show details: booking ID, car, score, comment, and date.
+ */
+
+require_once __DIR__ . '/../config/auth.php'; // Ensure the user is authenticated
 
 $user_id = $_SESSION['user_id'];
 
-// Lấy tham số tìm kiếm và trang
+// --- Get search and pagination parameters ---
 $search = trim($_GET['search'] ?? '');
 $page = max(1, intval($_GET['page'] ?? 1));
-$limit = 10;
+$limit = 10; // Number of ratings per page
 $offset = ($page - 1) * $limit;
 
+// --- Build the WHERE clause dynamically ---
 $where = "WHERE r.user_id = ?";
 $params = [$user_id];
 $types = 'i';
 
+// Add search condition if applicable
 if (!empty($search)) {
     $where .= " AND (c.car_name LIKE ? OR c.plate_number LIKE ?)";
     $params[] = "%$search%";
@@ -21,7 +33,7 @@ if (!empty($search)) {
     $types .= 'ss';
 }
 
-// Đếm tổng số đánh giá
+// --- Count total ratings for pagination ---
 $count_sql = "
     SELECT COUNT(*) AS total
     FROM ratings r
@@ -34,7 +46,7 @@ $count_stmt->execute();
 $total_rows = $count_stmt->get_result()->fetch_assoc()['total'];
 $total_pages = ceil($total_rows / $limit);
 
-// Lấy dữ liệu đánh giá
+// --- Fetch ratings with limit and offset ---
 $sql = "
     SELECT r.*, c.car_name, c.plate_number, b.booking_id
     FROM ratings r
@@ -49,7 +61,7 @@ $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Thống kê đánh giá
+// --- Fetch rating statistics (total count and average score) ---
 $stat = $conn->prepare("SELECT COUNT(*) AS total, AVG(score) AS avg FROM ratings WHERE user_id = ?");
 $stat->bind_param("i", $user_id);
 $stat->execute();
@@ -64,9 +76,12 @@ $avgScore = $stat_result['avg'] ? number_format($stat_result['avg'], 1) : 'Chưa
     <h3 class="fw-bold mb-3">Đánh giá của tôi</h3>
     <p><strong>Tổng số đánh giá:</strong> <?= $totalRatings ?> | <strong>Điểm trung bình:</strong> <?= $avgScore ?> ⭐</p>
 
+    <!-- Search form -->
     <form method="get" class="row g-2 mb-3">
         <div class="col-md-4">
-            <input type="text" name="search" class="form-control" placeholder="Tìm theo tên xe hoặc biển số..." value="<?= htmlspecialchars($search) ?>">
+            <input type="text" name="search" class="form-control" 
+                   placeholder="Tìm theo tên xe hoặc biển số..." 
+                   value="<?= htmlspecialchars($search) ?>">
         </div>
         <div class="col-md-2">
             <button type="submit" class="btn btn-primary w-100">🔍 Tìm kiếm</button>
@@ -79,6 +94,7 @@ $avgScore = $stat_result['avg'] ? number_format($stat_result['avg'], 1) : 'Chưa
     </form>
 
     <?php if ($result->num_rows > 0): ?>
+        <!-- Ratings table -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="table-secondary">
@@ -104,6 +120,7 @@ $avgScore = $stat_result['avg'] ? number_format($stat_result['avg'], 1) : 'Chưa
             </table>
         </div>
 
+        <!-- Pagination -->
         <?php if ($total_pages > 1): ?>
             <nav class="mt-3">
                 <ul class="pagination justify-content-center">

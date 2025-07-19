@@ -1,16 +1,25 @@
 <?php
 // payment_success.php
 
-require_once __DIR__ . '/../config/auth.php';
+/**
+ * This page displays a payment success summary after the user completes a booking payment.
+ * Features:
+ *  - Fetch and display booking details (car, route, total price).
+ *  - Show payment method and status (paid/unpaid).
+ *  - Provide navigation links to view booking history or return to the homepage.
+ */
 
+require_once __DIR__ . '/../config/auth.php'; // Ensure the user is logged in
+
+// --- Validate booking_id parameter ---
 if (!isset($_GET['booking_id'])) {
-    die("Thiếu mã đơn đặt xe.");
+    die("Thiếu mã đơn đặt xe."); // "Missing booking ID."
 }
 
 $booking_id = (int) $_GET['booking_id'];
 $user_id = $_SESSION['user_id'];
 
-// Lấy thông tin booking và payment
+// --- Fetch booking and payment details ---
 $stmt = $conn->prepare("
     SELECT b.*, p.method, p.status AS payment_status, c.car_brand, c.plate_number, 
            r.departure_location, r.arrival_location
@@ -24,8 +33,9 @@ $stmt->bind_param("ii", $booking_id, $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
+// --- Check if booking exists ---
 if ($result->num_rows === 0) {
-    die("Không tìm thấy đơn đặt xe.");
+    die("Không tìm thấy đơn đặt xe."); // "Booking not found."
 }
 
 $booking = $result->fetch_assoc();
@@ -45,6 +55,7 @@ $booking = $result->fetch_assoc();
         <div class="card-body text-center">
             <h3 class="text-success mb-4">Thanh toán thành công!</h3>
 
+            <!-- Display booking details -->
             <ul class="list-group text-start mb-4">
                 <li class="list-group-item"><strong>Mã đơn:</strong> <?= $booking['booking_id'] ?></li>
                 <li class="list-group-item"><strong>Xe:</strong> <?= htmlspecialchars($booking['car_brand']) ?> (<?= htmlspecialchars($booking['plate_number']) ?>)</li>
@@ -52,10 +63,13 @@ $booking = $result->fetch_assoc();
                 <li class="list-group-item"><strong>Tổng tiền:</strong> <?= number_format($booking['total_price'], 0, ',', '.') ?> VNĐ</li>
                 <li class="list-group-item"><strong>Phương thức thanh toán:</strong> <?= strtoupper($booking['method']) ?></li>
                 <li class="list-group-item"><strong>Trạng thái thanh toán:</strong> 
-                    <?= ($booking['payment_status'] === 'paid') ? '<span class="text-success">Đã thanh toán</span>' : '<span class="text-warning">Chưa thanh toán</span>' ?>
+                    <?= ($booking['payment_status'] === 'paid') 
+                        ? '<span class="text-success">Đã thanh toán</span>' 
+                        : '<span class="text-warning">Chưa thanh toán</span>' ?>
                 </li>
             </ul>
 
+            <!-- Navigation buttons -->
             <a href="my_bookings.php" class="btn btn-primary">Xem lịch sử đặt xe</a>
             <a href="/" class="btn btn-outline-secondary">Về trang chủ</a>
         </div>
