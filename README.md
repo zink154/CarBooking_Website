@@ -1,20 +1,20 @@
-# 🚗 TamHang Tourist - Car Booking Website
+TamHang Tourist - Car Booking Website
 
 TamHang Tourist is an online car booking system for tourism, supporting 4-seat, 7-seat, and 16-seat vehicles. It provides a full suite of features for route management, car booking, payment, and service ratings.
 
 ## 📑 Table of Contents
-- [🚗 TamHang Tourist - Car Booking Website](#-tamhang-tourist---car-booking-website)
-  - [📑 Table of Contents](#-table-of-contents)
-  - [📝 Project Description](#-project-description)
-  - [🛠 Technologies Used](#-technologies-used)
-  - [⚙ Requirements](#-requirements)
-  - [📥 Installation Instructions](#-installation-instructions)
-  - [▶ Usage Instructions](#-usage-instructions)
-  - [📚 Documentation](#-documentation)
-  - [🆘 Support Information](#-support-information)
-  - [🤝 Contribution Guidelines](#-contribution-guidelines)
-  - [🙏 Acknowledgments](#-acknowledgments)
-  - [✅ Conclusion](#-conclusion)
+
+- [📑 Table of Contents](#-table-of-contents)
+- [📝 Project Description](#-project-description)
+- [🛠 Technologies Used](#-technologies-used)
+- [⚙ Requirements](#-requirements)
+- [📥 Installation Instructions](#-installation-instructions)
+- [▶ Usage Instructions](#-usage-instructions)
+- [📚 Documentation](#-documentation)
+- [🆘 Support Information](#-support-information)
+- [🤝 Contribution Guidelines](#-contribution-guidelines)
+- [🙏 Acknowledgments](#-acknowledgments)
+- [✅ Conclusion](#-conclusion)
 
 ## 📝 Project Description
 This system allows users to:
