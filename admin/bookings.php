@@ -20,6 +20,8 @@ require_once __DIR__ . '/../config/db.php';        // Database connection
 require_once __DIR__ . '/../config/session.php';   // Session management
 require_once __DIR__ . '/../config/admin_auth.php';// Admin authentication
 
+$back_url = $_SERVER['HTTP_REFERER'] ?? 'dashboard.php';
+
 // --- Retrieve filters and pagination parameters ---
 $filter_status = $_GET['status'] ?? 'all';     // Booking status filter
 $search_name = trim($_GET['search'] ?? '');    // Customer name search keyword
@@ -92,7 +94,10 @@ $labels = [
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-dark">Danh sách đơn đặt xe</h2>
-        <a href="dashboard.php" class="btn btn-outline-secondary">← Về trang quản trị</a>
+        <div class="d-flex gap-2">
+            <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-secondary">← Quay lại</a>
+            <a href="all_ratings.php" class="btn btn-primary">⭐ Xem tất cả đánh giá</a>
+        </div>
     </div>
 
     <!-- Filter and search form -->

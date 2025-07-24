@@ -78,19 +78,19 @@ $back_url = $_SERVER['HTTP_REFERER'] ?? 'vehicles.php';
                       : '<span class="badge bg-secondary">Ngưng hoạt động</span>';
                   ?>
                 </td>
-                <td class="text-center">
-                  <a href="edit_route.php?id=<?= $route['route_id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
-                  <?php if ($route['status'] === 'available'): ?>
-                      <!-- Only show "Ngưng" button for active routes -->
-                      <a href="delete_route.php?id=<?= $route['route_id'] ?>" 
-                         class="btn btn-danger btn-sm"
-                         onclick="return confirm('Xác nhận ngưng tuyến này?')">Ngưng</a>
-                  <?php else: ?>
-                      <!-- Optionally, add restore button -->
-                      <a href="restore_route.php?id=<?= $route['route_id'] ?>" 
-                         class="btn btn-success btn-sm"
-                         onclick="return confirm('Khôi phục tuyến này?')">Khôi phục</a>
-                  <?php endif; ?>
+                <td>
+                  <div class="d-flex justify-content-center gap-2">
+                    <a href="edit_route.php?id=<?= $route['route_id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
+                    <?php if ($route['status'] === 'available'): ?>
+                        <a href="delete_route.php?id=<?= $route['route_id'] ?>" 
+                          class="btn btn-danger btn-sm"
+                          onclick="return confirm('Xác nhận ngưng tuyến này?')">Ngưng</a>
+                    <?php else: ?>
+                        <a href="restore_route.php?id=<?= $route['route_id'] ?>" 
+                          class="btn btn-success btn-sm"
+                          onclick="return confirm('Khôi phục tuyến này?')">Khôi phục</a>
+                    <?php endif; ?>
+                  </div>
                 </td>
               </tr>
             <?php endwhile; ?>

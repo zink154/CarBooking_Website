@@ -8,6 +8,6 @@ require_once __DIR__ . '/db.php';       // Database connection (if needed for ve
 // --- Check if the user is logged in ---
 if (!isset($_SESSION['user'])) {
     // If the user is not logged in, redirect to the login page
-    header("Location: login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit; // Stop script execution after redirection
 }

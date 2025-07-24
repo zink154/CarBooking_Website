@@ -192,7 +192,7 @@ if ($is_logged_in) {
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/booking_form.php">ĐẶT XE</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/users/book_car.php">DỊCH VỤ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/services.php">DỊCH VỤ</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>/contact.php">LIÊN HỆ</a></li>
 
                         <!-- User menu -->

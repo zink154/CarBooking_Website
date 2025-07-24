@@ -103,4 +103,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/admin_footer.php'; ?>
+<?php include __DIR__ . '/../views/footer.php'; ?>

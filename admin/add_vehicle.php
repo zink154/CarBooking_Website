@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $plate_number = $_POST['plate_number'];
     $price_per_km = (int)$_POST['price_per_km'];
     $capacity = $_POST['capacity'];
-    $status = $_POST['status'];
+    $status = 'available'; # Default status is 'available'
 
     // --- Handle image upload ---
     $upload_dir = '../images/car/';
@@ -159,14 +159,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <!-- Vehicle status -->
                 <div class="mb-3">
                     <label class="form-label">Trạng thái</label>
-                    <select name="status" id="status" class="form-select" required>
-                        <option value="" selected disabled>– Chọn trạng thái –</option>
-                        <option value="available">Sẵn sàng</option>
-                        <option value="in_use">Đang sử dụng</option>
-                        <option value="maintenance">Bảo trì</option>
-                    </select>
+                    <input type="text" name="status" class="form-control" value="Sẵn sàng" readonly>
+                    <input type="hidden" name="status" value="available">
                 </div>
-
+                
                 <!-- Car image upload -->
                 <div class="mb-3">
                     <label class="form-label">Ảnh xe</label>
@@ -270,4 +266,4 @@ function validatePrice() {
 </body>
 </html>
 
-<?php include __DIR__ . '/../views/admin_footer.php'; ?>
+<?php include __DIR__ . '/../views/footer.php'; ?>
