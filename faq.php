@@ -6,7 +6,7 @@
  * It includes information on how to book a car, payment methods, cancellation policies, and more.
  */
 
-require_once __DIR__ . '/config/autoload_config.php'; // Load cấu hình, session, DB
+require_once __DIR__ . '/config/autoload_config.php'; // Load configuration
 ?>
 
 <?php include __DIR__ . '/views/header.php'; ?> <!-- Include header -->
