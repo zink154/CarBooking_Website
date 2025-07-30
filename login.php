@@ -107,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Register link -->
         <div class="text-center mt-3">
-            <a href="register.php" class="text-decoration-none">Chưa có tài khoản? Đăng ký</a>
+            <a href="register.php" class="text-decoration-none d-block mb-1">Chưa có tài khoản? Đăng ký</a>
+            <a href="forgot_password.php" class="text-decoration-none">Quên mật khẩu?</a>
         </div>
     </div>
 </div>
