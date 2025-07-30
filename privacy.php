@@ -26,7 +26,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         và đảm bảo sự minh bạch trong việc thu thập và sử dụng dữ liệu.
     </p>
 
-    <!-- Thông tin thu thập -->
+    <!-- Information collected -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">1. Thông Tin Chúng Tôi Thu Thập</h4>
         <ul>
@@ -37,7 +37,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </ul>
     </div>
 
-    <!-- Mục đích sử dụng -->
+    <!-- Intended use -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">2. Mục Đích Sử Dụng Dữ Liệu</h4>
         <ul>
@@ -48,7 +48,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </ul>
     </div>
 
-    <!-- Lưu trữ và bảo mật -->
+    <!-- Storage and Security -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">3. Lưu Trữ & Bảo Mật Dữ Liệu</h4>
         <p>
@@ -67,7 +67,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </p>
     </div>
 
-    <!-- Quyền của người dùng -->
+    <!-- User Rights -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">5. Quyền Của Người Dùng</h4>
         <p>
@@ -76,7 +76,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </p>
     </div>
 
-    <!-- Liên hệ -->
+    <!-- Contact -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">6. Liên Hệ</h4>
         <p>
