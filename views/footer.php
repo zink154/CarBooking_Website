@@ -56,8 +56,9 @@
                 <div class="col-md-3">
                     <h5 class="mb-3">Liên kết</h5>
                     <ul class="list-unstyled">
-                        <li><a href="/pages/privacy.php" class="text-light text-decoration-none">Chính sách bảo mật</a></li>
-                        <li><a href="/pages/terms.php" class="text-light text-decoration-none">Điều khoản sử dụng</a></li>
+                        <li><a href="<?= BASE_URL ?>/privacy.php">Chính sách bảo mật</a></li>
+                        <li><a href="<?= BASE_URL ?>/terms.php">Điều khoản dịch vụ</a></li>
+                        <li><a href="<?= BASE_URL ?>/faq.php">Câu hỏi thường gặp (FAQ)</a></li>
                     </ul>
                 </div>
 
