@@ -204,7 +204,7 @@ if ($is_logged_in) {
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/profile.php">Hồ sơ của tôi</a></li>
                                     <li><a class="dropdown-item" href="<?= BASE_URL ?>/users/my_bookings.php">Lịch sử đặt xe</a></li>
-                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>change_password.php">Đổi mật khẩu</a></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>/change_password.php">Đổi mật khẩu</a></li>
                                     
                                     <!-- Show Dashboard if user is admin -->
                                     <?php if ($user_role === 'admin'): ?>
