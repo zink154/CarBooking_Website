@@ -76,7 +76,10 @@ $avgScore = $stats['avg'] ? number_format($stats['avg'], 1) : 'Chưa có'; // Di
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold mb-0">Tất cả đánh giá từ khách hàng</h3>
-        <a href="dashboard.php" class="btn btn-outline-secondary">← Quay về Dashboard</a>
+        <div>
+            <button onclick="window.history.back();" class="btn btn-outline-secondary me-2">← Quay lại</button>
+            <a href="users_management.php" class="btn btn-outline-primary">👤 Quản lý người dùng</a>
+        </div>
     </div>
 
     <!-- Display total ratings and average score -->

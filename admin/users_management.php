@@ -39,10 +39,22 @@ include __DIR__ . '/../views/header.php';
     <meta charset="UTF-8">
     <title>Quản lý người dùng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </head>
 <body>
 <div class="container my-4">
-    <h2 class="mb-4">👤 Quản lý người dùng</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>👤 Quản lý người dùng</h2>
+        <div>
+            <button onclick="goBack()" class="btn btn-outline-secondary me-2">← Quay lại</button>
+            <a href="dashboard.php" class="btn btn-outline-primary">Về Dashboard</a>
+        </div>
+    </div>
+
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
