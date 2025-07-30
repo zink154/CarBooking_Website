@@ -32,30 +32,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Verify the password using password_hash()
         if (password_verify($password, $user['password_hash'])) {
-            // Store user data in session
-            $_SESSION['user'] = [
-                'user_id' => $user['user_id'],
-                'name'    => $user['name'],
-                'type'    => $user['type']
-            ];
-            
-            // Add warning message if account is unverified
-            if ($user['type'] === 'unverified') {
-                $_SESSION['warning'] = "Tài khoản của bạn chưa được xác thực. 
-                <a href='verify_notice.php' class='alert-link'>Bấm vào đây để xác thực</a>.";
+
+            // Check user type and handle accordingly
+            if ($user['type'] === 'banned') {
+                $error_message = "Tài khoản của bạn đã bị cấm. Vui lòng <a href='contact.php' class='alert-link'>liên hệ</a> quản trị viên.";
+            } else {
+                // Store user data in session
+                $_SESSION['user'] = [
+                    'user_id' => $user['user_id'],
+                    'name'    => $user['name'],
+                    'type'    => $user['type']
+                ];
+                
+                // Add warning message if account is unverified
+                if ($user['type'] === 'unverified') {
+                    $_SESSION['warning'] = "Tài khoản của bạn chưa được xác thực. 
+                    <a href='verify_notice.php' class='alert-link'>Bấm vào đây để xác thực</a>.";
+                }
+
+                // Save user ID in session for quick access
+                $_SESSION['user_id'] = $user['user_id'];
+
+                // If user is an admin, save admin ID in session
+                if ($user['type'] === 'admin') {
+                    $_SESSION['admin_id'] = $user['user_id'];
+                }
+
+                // Redirect to homepage
+                header("Location: index.php");
+                exit();
             }
-
-            // Save user ID in session for quick access
-            $_SESSION['user_id'] = $user['user_id'];
-
-            // If user is an admin, save admin ID in session
-            if ($user['type'] === 'admin') {
-                $_SESSION['admin_id'] = $user['user_id'];
-            }
-
-            // Redirect to homepage
-            header("Location: index.php");
-            exit();
         } else {
             $error_message = "Mật khẩu không đúng!"; // Wrong password
         }
