@@ -48,6 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Save user ID in session for quick access
             $_SESSION['user_id'] = $user['user_id'];
 
+            // If user is an admin, save admin ID in session
+            if ($user['type'] === 'admin') {
+                $_SESSION['admin_id'] = $user['user_id'];
+            }
+
             // Redirect to homepage
             header("Location: index.php");
             exit();

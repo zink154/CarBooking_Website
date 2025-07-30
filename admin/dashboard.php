@@ -129,6 +129,7 @@ $totalRatings = $ratingData['total'] ?? 0; // Total number of ratings
         <a href="routes.php" class="btn btn-outline-secondary m-2">🛣️ Quản lý tuyến</a>
         <a href="bookings.php" class="btn btn-outline-secondary m-2">📑 Quản lý đơn</a>
         <a href="all_ratings.php" class="btn btn-outline-secondary m-2">🌟 Quản lý đánh giá</a>
+        <a href="users_management.php" class="btn btn-outline-secondary m-2">👤 Quản lý người dùng</a>
     </div>
 </div>
 
