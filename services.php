@@ -67,7 +67,7 @@ include __DIR__ . '/views/header.php';
     </div>
 
     <div class="row g-4">
-        <!-- Dịch vụ 1 -->
+        <!-- Service 1 -->
         <div class="col-md-3">
             <div class="card service-card p-3 text-center border-0 shadow">
                 <div class="service-icon mb-3">
@@ -78,7 +78,7 @@ include __DIR__ . '/views/header.php';
             </div>
         </div>
 
-        <!-- Dịch vụ 2 -->
+        <!-- Service 2 -->
         <div class="col-md-3">
             <div class="card service-card p-3 text-center border-0 shadow">
                 <div class="service-icon mb-3">
@@ -89,7 +89,7 @@ include __DIR__ . '/views/header.php';
             </div>
         </div>
 
-        <!-- Dịch vụ 3 -->
+        <!-- Service 3 -->
         <div class="col-md-3">
             <div class="card service-card p-3 text-center border-0 shadow">
                 <div class="service-icon mb-3">
@@ -100,7 +100,7 @@ include __DIR__ . '/views/header.php';
             </div>
         </div>
 
-        <!-- Dịch vụ 4 -->
+        <!-- Service 4 -->
         <div class="col-md-3">
             <div class="card service-card p-3 text-center border-0 shadow">
                 <div class="service-icon mb-3">

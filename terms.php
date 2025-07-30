@@ -24,7 +24,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         Khi sử dụng website và dịch vụ của TamHang Tourist, bạn đồng ý với các điều khoản sau đây.
     </p>
 
-    <!-- Quy định chung -->
+    <!-- General provisions -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">1. Quy Định Chung</h4>
         <p>
@@ -33,7 +33,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </p>
     </div>
 
-    <!-- Quyền và nghĩa vụ của người dùng -->
+    <!-- User rights and obligations -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">2. Quyền & Nghĩa Vụ Của Người Dùng</h4>
         <ul>
@@ -43,7 +43,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </ul>
     </div>
 
-    <!-- Đặt xe và hủy đơn -->
+    <!-- Booking and cancel -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">3. Quy Định Về Đặt Xe & Hủy Đơn</h4>
         <p>
@@ -66,7 +66,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </p>
     </div>
 
-    <!-- Trách nhiệm của TamHang Tourist -->
+    <!-- Responsibility of TamHang Tourist -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">4. Trách Nhiệm Của TamHang Tourist</h4>
         <p>
@@ -75,7 +75,7 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </p>
     </div>
 
-    <!-- Quy định thanh toán -->
+    <!-- Payment Terms -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">5. Quy Định Thanh Toán</h4>
         <ul>
@@ -84,16 +84,16 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configs, session, 
         </ul>
     </div>
 
-    <!-- Thay đổi điều khoản -->
+    <!-- Changes to terms -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">6. Thay Đổi Điều Khoản</h4>
         <p>
             TamHang Tourist có thể thay đổi hoặc cập nhật điều khoản mà không cần báo trước. 
-            Phiên bản cập nhật sẽ được đăng trên website.
+            Phiên bản cập nhật sẽ được đăng trên Website hoặc các trang mạng xã hội của chúng tôi.
         </p>
     </div>
 
-    <!-- Liên hệ -->
+    <!-- Contact -->
     <div class="mb-4">
         <h4 class="fw-bold text-dark">7. Liên Hệ</h4>
         <p>

@@ -130,7 +130,6 @@ require_once __DIR__ . '/config/autoload_config.php'; // Load configuration
         </div>
     </div>
 
-
     </div>
 </div>
 
